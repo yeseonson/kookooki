@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>KOOKOOKI · 선한국 팬페이지</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700;900&family=Gowun+Batang:wght@400;700&family=Nanum+Myeongjo:wght@400;700;800&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #f6f1e6;
+    --bg-soft: #ece0c6;
+    --ink: #2b2118;
+    --ink-soft: #6b5440;
+    --accent: #b87f4d;
+    --rule: rgba(43,33,24,.15);
+    --paper: #fffaef;
+    --paper-warm: #f9eed7;
+    --shadow-sm: 0 2px 0 rgba(43,33,24,.06), 0 6px 18px -8px rgba(43,33,24,.18);
+    --shadow-md: 0 3px 0 rgba(43,33,24,.06), 0 18px 40px -16px rgba(43,33,24,.25);
+    --radius-sm: 14px;
+    --radius-md: 22px;
+    --radius-lg: 32px;
+    --serif: "Gowun Batang", "Nanum Myeongjo", "Noto Serif KR", ui-serif, Georgia, serif;
+    --sans: "Pretendard", ui-sans-serif, system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+  body{font-size:16px;line-height:1.6}
+  /* Warm paper texture */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 0%, rgba(184,127,77,.06), transparent 70%),
+      radial-gradient(ellipse 60% 40% at 90% 60%, rgba(184,127,77,.04), transparent 70%);
+  }
+  #root{position:relative;z-index:1}
+  img{max-width:100%;display:block}
+  a{color:inherit}
+  button{font:inherit;cursor:pointer}
+  ::selection{background:var(--accent);color:var(--paper)}
+
+  /* Placeholder image — rounded, warm */
+  .ph{
+    position:relative;background:
+      repeating-linear-gradient(135deg, var(--paper-warm) 0 14px, transparent 14px 28px),
+      var(--paper);
+    color:var(--ink-soft);
+    display:flex;align-items:flex-end;justify-content:flex-start;
+    font-family:var(--mono);font-size:11px;letter-spacing:.04em;
+    border:1px solid var(--rule);
+    border-radius:var(--radius-md);
+    overflow:hidden;
+    box-shadow:var(--shadow-sm);
+  }
+  .ph .lbl{
+    position:absolute;left:12px;bottom:12px;padding:4px 10px;
+    background:var(--paper);border:1px solid var(--rule);
+    border-radius:999px;text-transform:uppercase;font-size:10px;
+  }
+  .ph .cnr{position:absolute;right:12px;top:12px;font-family:var(--mono);font-size:10px;color:var(--ink-soft);opacity:.5}
+
+  /* Soft card baseline */
+  .softcard{
+    background:var(--paper);border:1px solid var(--rule);
+    border-radius:var(--radius-md);box-shadow:var(--shadow-sm);
+    padding:24px;
+  }
+
+  /* Stamp / sticker rotation helpers */
+  .tilt-l{transform:rotate(-1.2deg)}
+  .tilt-r{transform:rotate(1.2deg)}
+
+  /* Cute heading style */
+  .hand{font-family:var(--serif);font-weight:700;letter-spacing:-.005em}
+
+  /* Decorative dot row */
+  .dotline{display:inline-flex;gap:6px;align-items:center;color:var(--accent)}
+  .dotline::before,.dotline::after{content:"♡";font-size:11px;opacity:.7}
+</style>
+
+<!-- ───── React + Babel ───── -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.37.0/dist/umd/supabase.min.js"></script>
+
+</head>
+<body>
+
+<div id="root"></div>
+
+<!-- TWEAK_DEFAULTS lives in a tiny module so the host can rewrite the JSON block. -->
+<script>
+  window.TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "palette": [
+      "#f6f1e6",
+      "#2b2118",
+      "#8b5e3c"
+    ],
+    "serifFamily": "Noto Serif KR",
+    "heroVariant": "cover",
+    "heroNameSize": 140,
+    "grain": true,
+    "frameStyle": "rule"
+  }/*EDITMODE-END*/;
+</script>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="components.jsx"></script>
+<script type="text/babel" src="main.jsx"></script>
+
+</body>
+</html>
