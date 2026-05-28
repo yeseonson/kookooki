@@ -239,7 +239,7 @@ function About() {
           <div style={{ marginTop: 28, display: "flex", alignItems: "center", gap: 16 }}>
             <div>
               <div style={{ fontFamily: "var(--mono)", fontSize: 10, letterSpacing: ".18em", color: "var(--ink-soft)", textTransform: "uppercase", marginBottom: 4 }}>Booking</div>
-              <div style={{ fontFamily: "var(--serif)", fontSize: 16, fontWeight: 600, color: "var(--ink)" }}>사의 찬미 예매</div>
+              <div style={{ fontFamily: "var(--serif)", fontSize: 16, fontWeight: 600, color: "var(--ink)" }}>{"<사의 찬미> 예매 바로가기"}</div>
             </div>
             <div style={{ width: 1, height: 36, background: "var(--rule)", flexShrink: 0 }} />
             <div style={{ display: "flex", gap: 10 }}>
@@ -893,11 +893,10 @@ function Footer() {
       borderTop: ".5px solid var(--rule)",
       padding: "40px 32px",
       maxWidth: 1280, margin: "0 auto",
-      display: "flex", justifyContent: "space-between", alignItems: "baseline",
       fontFamily: "var(--mono)", fontSize: 11, letterSpacing: ".12em",
       color: "var(--ink-soft)", textTransform: "uppercase"
     }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", gap: 16, flexWrap: "wrap" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", gap: 16, flexWrap: "wrap", marginBottom: 20 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <div style={{
             fontFamily: "var(--mono)", fontWeight: 600, fontSize: 16,
@@ -909,6 +908,19 @@ function Footer() {
         <div style={{ textAlign: "right", fontSize: 12, whiteSpace: "nowrap" }}>
           문의 · <a href="https://instagram.com/kook_ooki" target="_blank" rel="noreferrer" style={{ color: "var(--accent)", textDecoration: "none", letterSpacing: ".06em" }}>@kook_ooki</a>
         </div>
+      </div>
+      <div style={{
+        borderTop: ".5px solid var(--rule)",
+        paddingTop: 16,
+        fontSize: 10,
+        lineHeight: 1.8,
+        color: "var(--ink-soft)",
+        opacity: 0.7,
+        textTransform: "none",
+        letterSpacing: ".03em"
+      }}>
+        <div>This is a non-commercial, unofficial fan-made archive. All rights to images, videos, and original content belong to their respective owners.</div>
+        <div>비상업적 팬 제작 아카이브입니다. 이미지·영상·원본 콘텐츠의 저작권은 모두 해당 권리자에게 있습니다. 삭제 요청 및 문의: Instagram <a href="https://instagram.com/kook_ooki" target="_blank" rel="noreferrer" style={{ color: "var(--ink-soft)", textDecoration: "underline" }}>@kook_ooki</a></div>
       </div>
     </footer>);
 
