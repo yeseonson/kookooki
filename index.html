@@ -82,6 +82,31 @@
   /* Decorative dot row */
   .dotline{display:inline-flex;gap:6px;align-items:center;color:var(--accent)}
   .dotline::before,.dotline::after{content:"♡";font-size:11px;opacity:.7}
+
+  /* ── Mobile (≤767px) ───────────────────────────────────────────────────── */
+  @media (max-width: 767px) {
+    .mob-hide           { display: none !important; }
+    .mob-sec            { padding: 72px 20px 48px !important; }
+    .mob-sched-sec      { padding: 24px 20px !important; }
+    .mob-sched-inner    { padding: 32px 24px !important; }
+    .mob-nav            { padding: 0 12px !important; }
+    .mob-nav-pill       { padding: 6px 16px !important; }
+    .mob-nav-items      { gap: 14px !important; }
+    .mob-hero           { padding: 70px 20px 12px !important; }
+    .mob-col1           { grid-template-columns: 1fr !important; gap: 32px !important; }
+    .mob-h2             { font-size: 36px !important; }
+    .mob-sec-hdr        { flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; }
+    .mob-countdown      { grid-template-columns: 1fr !important; gap: 28px !important; }
+    .mob-countdown-nums { gap: 12px !important; }
+    .mob-countdown-digit{ font-size: 52px !important; }
+    .mob-sched-hdr      { display: none !important; }
+    .mob-sched-row      { grid-template-columns: 70px 1fr auto !important; gap: 10px !important; }
+    .mob-works-row      { grid-template-columns: 56px 1fr !important; gap: 12px !important; }
+    .mob-about-img      { order: -1; }
+    .mob-gallery-grid   { grid-template-columns: repeat(2, 1fr) !important; }
+    .mob-concerts-grid  { grid-template-columns: 1fr !important; }
+    .mob-concert-row    { grid-template-columns: 72px 1fr !important; gap: 10px !important; }
+  }
 </style>
 
 <!-- ───── React + Babel ───── -->

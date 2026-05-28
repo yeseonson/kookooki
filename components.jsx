@@ -67,32 +67,16 @@ function Nav() {
 
   return (
     <>
-      <div style={{
-        position: "fixed",
-        top: 26,
-        left: 32,
-        zIndex: 60,
-        fontFamily: "var(--mono)",
-        fontSize: 16,
-        fontWeight: 600,
-        letterSpacing: ".18em",
-        color: "var(--accent)",
-        textTransform: "uppercase",
-        pointerEvents: "none"
-      }}>
-        KOOKOOKI
-      </div>
-
-    <nav
+    <nav className="mob-nav"
       style={{
-        position: "fixed", top: 26, left: 32, right: 0, zIndex: 60,
+        position: "fixed", top: 26, left: 0, right: 0, zIndex: 60,
         display: "flex", justifyContent: "center",
         padding: "0 18px",
         pointerEvents: "none",
         transition: "top .25s"
       }}>
 
-      <div style={{
+      <div className="mob-nav-pill" style={{
         pointerEvents: "auto",
         background: scrolled ? "var(--paper)" : "rgba(255,250,239,.7)",
         backdropFilter: "blur(14px) saturate(160%)",
@@ -106,7 +90,7 @@ function Nav() {
         transition: "box-shadow .25s, background .25s",
         maxWidth: "calc(100vw - 36px)"
       }}>
-        <div style={{ display: "flex", gap: 22, alignItems: "center" }}>
+        <div className="mob-nav-items" style={{ display: "flex", gap: 22, alignItems: "center" }}>
           <span style={{ color: "var(--accent)", fontSize: 12 }}>✧</span>
           {items.map(([id, label]) =>
           <a key={id} href={`#${id}`} onClick={jump(id)} style={{
@@ -144,31 +128,13 @@ function Hero({ variant = "cover", nameSize = 220, serifFamily = "Noto Serif KR"
 
 
   return (
-    <header id="top" style={{ padding: "72px 32px 24px", maxWidth: 1280, margin: "0 auto" }}>
-
+    <header id="top" className="mob-hero" style={{ padding: "80px 32px 20px", maxWidth: 1280, margin: "0 auto" }}>
       <div style={{
-        display: "grid",
-        gridTemplateColumns: variant === "portrait-left" ? "minmax(320px, 440px) 1fr" : "1fr minmax(320px, 440px)",
-        gap: 56,
-        alignItems: "stretch",
-        marginTop: 18
+        fontFamily: "var(--mono)", fontWeight: 600, fontSize: 22,
+        color: "var(--accent)", textTransform: "uppercase", letterSpacing: ".18em"
       }}>
-        {variant === "portrait-left" &&
-        <div className="tilt-l" style={{ display: "none" }}>
-            <PH ratio="3 / 4" label="" code="hero-01.jpg" />
-          </div>
-        }
-
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", minHeight: 0 }}>
-        </div>
-
-        {variant !== "portrait-left" &&
-        <div className="tilt-r" style={{ display: "none" }}>
-            <PH ratio="3 / 4" label="PORTRAIT" code="01.jpg" />
-          </div>
-        }
+        KOOKOOKI
       </div>
-
     </header>);
 
 }
@@ -223,10 +189,10 @@ function About() {
     return { days: diffDays, label: `${candidate.getFullYear()}년 생일` };
   }, [birthStr]);
   return (
-    <section id="about" style={{ padding: "120px 32px 80px", maxWidth: 1280, margin: "0 auto" }}>
+    <section id="about" className="mob-sec" style={{ padding: "120px 32px 80px", maxWidth: 1280, margin: "0 auto" }}>
       <SectionHeader chapter="01" label="About" title="배우 선한국" />
 
-      <div style={{
+      <div className="mob-col1" style={{
         display: "grid", gridTemplateColumns: "1fr minmax(280px, 380px)", gap: 64,
         marginTop: 56, alignItems: "start"
       }}>
@@ -242,7 +208,7 @@ function About() {
               <tr key={k} style={{ borderBottom: "1px dashed var(--rule)" }}>
                   <td style={{
                   padding: "20px 0", color: "var(--ink-soft)",
-                  fontWeight: 500, fontSize: 13, width: 160,
+                  fontWeight: 500, fontSize: 13, width: 90,
                   verticalAlign: "top"
                 }}>{k}</td>
                   <td style={{
@@ -317,7 +283,7 @@ function About() {
         </div>
 
         {/* Profile photo on the right */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+        <div className="mob-about-img" style={{ display: "flex", flexDirection: "column", gap: 18 }}>
           <PH ratio="3 / 4" label="PROFILE" code="profile-01.jpg" />
           <div style={{
             border: "1px solid var(--rule)", borderRadius: 18,
@@ -368,16 +334,16 @@ function ConcertsStrip() {
           {CONCERTS.length} entries
         </span>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "0 32px" }}>
+      <div className="mob-concerts-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "0 32px" }}>
         {CONCERTS.map((c, i) =>
-        <div key={i} style={{
+        <div key={i} className="mob-concert-row" style={{
           display: "grid", gridTemplateColumns: "100px 1fr auto",
           gap: 16, padding: "14px 0", borderBottom: ".5px solid var(--rule)",
           alignItems: "baseline"
         }}>
             <div style={{ fontFamily: "var(--mono)", fontSize: 12, color: "var(--ink-soft)" }}>{c.date}</div>
             <div style={{ fontFamily: "var(--serif)", fontSize: 16, fontWeight: 500 }}>{c.title}</div>
-            <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--accent)", letterSpacing: ".08em", textTransform: "uppercase" }}>
+            <div className="mob-hide" style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--accent)", letterSpacing: ".08em", textTransform: "uppercase" }}>
               w/ {c.with}
             </div>
           </div>
@@ -390,7 +356,7 @@ function ConcertsStrip() {
 // ─── shared section header ────────────────────────────────────────────────
 function SectionHeader({ chapter, label, title, right, chipStyle = {}, labelStyle = {}, titleStyle = {} }) {
   return (
-    <div style={{
+    <div className="mob-sec-hdr" style={{
       display: "flex", justifyContent: "space-between", alignItems: "flex-end",
       paddingBottom: 22, gap: 16, flexWrap: "wrap"
     }}>
@@ -411,7 +377,7 @@ function SectionHeader({ chapter, label, title, right, chipStyle = {}, labelStyl
             ✦ {label}
           </span> : null}
         </div>
-        <h2 style={{
+        <h2 className="mob-h2" style={{
           fontFamily: "var(--serif)", fontSize: 56, fontWeight: 700,
           margin: 0, letterSpacing: "-.015em", lineHeight: 1,
           color: "var(--ink)",
@@ -444,7 +410,7 @@ function Works() {
   }, [yearFilter, sourceWorks]);
 
   return (
-    <section id="works" style={{
+    <section id="works" className="mob-sec" style={{
       padding: "120px 32px 80px", maxWidth: 1280, margin: "0 auto"
     }}>
       <SectionHeader chapter="03" label="Works" title="출연 작품" />
@@ -463,7 +429,7 @@ function Works() {
 
       <div style={{ marginTop: 20, display: "flex", flexDirection: "column", gap: 10 }}>
         {filtered.map((w, i) =>
-        <div key={i} className="softcard" style={{
+        <div key={i} className="softcard mob-works-row" style={{
           display: "grid",
           gridTemplateColumns: "72px 1fr 1fr 220px 60px",
           gap: 24, padding: "22px 24px",
@@ -488,12 +454,12 @@ function Works() {
               borderRadius: 999, padding: "2px 10px"
             }}>{w.kind}</div>
             </div>
-            <div style={{ fontSize: 14, color: "var(--ink)" }}>{w.role}</div>
-            <div style={{ fontSize: 13, color: "var(--ink-soft)" }}>
+            <div className="mob-hide" style={{ fontSize: 14, color: "var(--ink)" }}>{w.role}</div>
+            <div className="mob-hide" style={{ fontSize: 13, color: "var(--ink-soft)" }}>
               <div>{w.venue}</div>
               <div style={{ fontFamily: "var(--mono)", fontSize: 11, marginTop: 4 }}>{w.run}</div>
             </div>
-            <div style={{
+            <div className="mob-hide" style={{
             fontFamily: "var(--mono)", fontSize: 11, color: "var(--ink-soft)",
             textAlign: "right", letterSpacing: ".02em"
           }}>
@@ -535,10 +501,10 @@ function Schedule() {
   const s = Math.floor(diff % 60000 / 1000);
 
   return (
-    <section id="schedule" style={{
+    <section id="schedule" className="mob-sched-sec" style={{
       padding: "40px 32px", maxWidth: 1280, margin: "40px auto"
     }}>
-      <div style={{
+      <div className="mob-sched-inner" style={{
         background: "linear-gradient(160deg, #3a2a1e 0%, #2b2118 100%)",
         color: "#faf3e3",
         borderRadius: "var(--radius-lg)",
@@ -570,7 +536,7 @@ function Schedule() {
 
         {/* Countdown */}
         {next ? (
-        <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 64, marginTop: 56 }}>
+        <div className="mob-countdown" style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 64, marginTop: 56 }}>
           <div>
             <div style={{
               display: "inline-block",
@@ -580,10 +546,10 @@ function Schedule() {
             }}>
               ♡ 다음 공연까지
             </div>
-            <div style={{ display: "flex", gap: 32, alignItems: "baseline", fontFamily: "var(--serif)" }}>
+            <div className="mob-countdown-nums" style={{ display: "flex", gap: 32, alignItems: "baseline", fontFamily: "var(--serif)" }}>
               {[["일", d], ["시간", h], ["분", m], ["초", s]].map(([lbl, v], i) =>
               <div key={lbl}>
-                  <div style={{
+                  <div className="mob-countdown-digit" style={{
                   fontSize: 96, fontWeight: 700, lineHeight: 1,
                   letterSpacing: "-.04em", color: i === 0 ? "#e8a370" : "#faf3e3",
                   fontVariantNumeric: "tabular-nums"
@@ -630,7 +596,7 @@ function Schedule() {
 
         {/* List */}
         <div style={{ marginTop: 56, position: "relative", zIndex: 1 }}>
-          <div style={{
+          <div className="mob-sched-hdr" style={{
             fontFamily: "var(--sans)", fontSize: 11, fontWeight: 500,
             color: "rgba(250,243,227,.5)",
             paddingBottom: 12, marginBottom: 8,
@@ -653,7 +619,7 @@ function Schedule() {
           {upcoming.map((s, i) => {
               const dd = daysUntil(s.date);
               return (
-                <div key={i} style={{
+                <div key={i} className="mob-sched-row" style={{
                   display: "grid",
                   gridTemplateColumns: "100px 80px 1.5fr 1.2fr 140px 80px",
                   gap: 20, padding: "14px 18px",
@@ -664,12 +630,12 @@ function Schedule() {
                 <div style={{ fontFamily: "var(--mono)", fontSize: 13, fontVariantNumeric: "tabular-nums" }}>
                   {s.date.slice(5).replace("-", ".")}
                 </div>
-                <div style={{ fontFamily: "var(--mono)", fontSize: 13 }}>{s.time}</div>
+                <div className="mob-hide" style={{ fontFamily: "var(--mono)", fontSize: 13 }}>{s.time}</div>
                 <div style={{ fontFamily: "var(--serif)", fontSize: "19px", fontWeight: "600", width: "180px" }}>{s.title}</div>
-                <div style={{ fontSize: 13, color: "rgba(250,243,227,.65)" }}>
+                <div className="mob-hide" style={{ fontSize: 13, color: "rgba(250,243,227,.65)" }}>
                   {resolveVenue(s) || "—"}
                 </div>
-                <div>
+                <div className="mob-hide">
                   {s.note ? <span style={{
                       fontFamily: "var(--sans)", fontSize: 11, fontWeight: 500,
                       color: "#e8a370", background: "rgba(184,127,77,.15)",
@@ -770,7 +736,7 @@ function Gallery() {
   );
 
   return (
-    <section id="gallery" style={{ padding: "120px 32px 120px", maxWidth: 1280, margin: "0 auto" }}>
+    <section id="gallery" className="mob-sec" style={{ padding: "120px 32px 120px", maxWidth: 1280, margin: "0 auto" }}>
       <SectionHeader
         chapter="04"
         label="Gallery"
@@ -785,7 +751,7 @@ function Gallery() {
 
       {/* 프로필 tab — uniform 3/4 grid, 17 slots */}
       {tab === "프로필" && (
-        <div style={{
+        <div className="mob-gallery-grid" style={{
           marginTop: 32,
           display: "grid",
           gridTemplateColumns: "repeat(4, 1fr)",
