@@ -815,7 +815,7 @@ function Gallery() {
           background: "transparent", color: "var(--paper)",
           border: ".5px solid rgba(251,244,227,.4)", padding: "6px 14px",
           fontFamily: "var(--mono)", fontSize: 11, letterSpacing: ".1em"
-        }}>ESC ×</button>
+        }}>X</button>
 
         <div onClick={(e) => e.stopPropagation()} style={{ maxWidth: 900, width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
           <div style={{ position: "relative", maxHeight: "75vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
