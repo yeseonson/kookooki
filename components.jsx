@@ -933,11 +933,6 @@ function Footer() {
     }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", gap: 16, flexWrap: "wrap" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <img
-            src="images/떡국.png"
-            alt="떡국"
-            style={{ width: 60, height: "auto" }}
-          />
           <div style={{
             fontFamily: "var(--mono)", fontWeight: 600, fontSize: 16,
             color: "var(--accent)", textTransform: "uppercase", letterSpacing: ".18em"
