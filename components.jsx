@@ -906,11 +906,10 @@ function Footer() {
           </div>
         </div>
         <div style={{ textAlign: "right", fontSize: 12, whiteSpace: "nowrap" }}>
-          문의 · <a href="https://instagram.com/kook_ooki" target="_blank" rel="noreferrer" style={{ color: "var(--accent)", textDecoration: "none", letterSpacing: ".06em" }}>@kook_ooki</a>
+          <a href="https://instagram.com/kook_ooki" target="_blank" rel="noreferrer" style={{ color: "var(--accent)", textDecoration: "none", letterSpacing: ".06em" }}>@kook_ooki</a>
         </div>
       </div>
       <div style={{
-        borderTop: ".5px solid var(--rule)",
         paddingTop: 16,
         fontSize: 10,
         lineHeight: 1.8,
