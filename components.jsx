@@ -175,9 +175,21 @@ function About() {
     ["이름",     PROFILE.nameKo    || PROFILE.name_ko  || ""],
     ["생년월일", birthStr.replace(/-/g, ".").slice(0, 10).replace(/\./g, ".")],
     ["MBTI",     PROFILE.mbti      || ""],
-    ["데뷔",     PROFILE.debutDate || PROFILE.debut_date
-                   ? (PROFILE.debutDate || PROFILE.debut_date).replace(/-/g, ".") + " 뮤지컬 〈삼총사〉"
-                   : ""],
+    ["데뷔",
+      PROFILE.debutDate || PROFILE.debut_date ? (
+        <>
+          {(PROFILE.debutDate || PROFILE.debut_date).replace(/-/g, ".")}
+          <span style={{
+            marginLeft: 6,
+            fontSize: 14,
+            fontWeight: 600,
+            color: "var(--ink)"
+          }}>
+            뮤지컬 〈삼총사〉
+          </span>
+        </>
+      ) : ""
+    ],
   ].filter(([, v]) => v);
   const birthday = useMemo(() => {
     const d = new Date(birthStr + "T00:00:00");
@@ -239,7 +251,7 @@ function About() {
           <div style={{ marginTop: 28, display: "flex", alignItems: "center", gap: 16 }}>
             <div>
               <div style={{ fontFamily: "var(--mono)", fontSize: 10, letterSpacing: ".18em", color: "var(--ink-soft)", textTransform: "uppercase", marginBottom: 4 }}>Booking</div>
-              <div style={{ fontFamily: "var(--serif)", fontSize: 16, fontWeight: 600, color: "var(--ink)" }}>{"<사의 찬미> 예매 바로가기"}</div>
+              <div style={{ fontFamily: "var(--serif)", fontSize: 16, fontWeight: 600, color: "var(--ink)" }}>{"<사의 찬미> 예매하기"}</div>
             </div>
             <div style={{ width: 1, height: 36, background: "var(--rule)", flexShrink: 0 }} />
             <div style={{ display: "flex", gap: 10 }}>
@@ -254,12 +266,13 @@ function About() {
                 rel="noreferrer"
                 style={{
                   display: "inline-flex", alignItems: "center",
-                  padding: "10px 20px",
+                  padding: "8px 14px",
                   background: "var(--paper)", color: "var(--ink)",
                   border: "1px solid var(--rule)",
-                  fontFamily: "var(--sans)", fontSize: 13, fontWeight: 600,
+                  fontFamily: "var(--sans)", fontSize: 12, fontWeight: 600,
                   borderRadius: 999, textDecoration: "none",
-                  letterSpacing: ".02em",
+                  letterSpacing: ".01em",
+                  whiteSpace: "nowrap",
                   boxShadow: "var(--shadow-sm)",
                   transition: "background .18s, color .18s, border-color .18s"
                 }}
