@@ -644,7 +644,17 @@ function Schedule() {
                   {s.date.slice(5).replace("-", ".")}
                 </div>
                 <div className="mob-hide" style={{ fontFamily: "var(--mono)", fontSize: 13 }}>{s.time}</div>
-                <div style={{ fontFamily: "var(--serif)", fontSize: "19px", fontWeight: "600", width: "180px" }}>{s.title}</div>
+                <div style={{
+                  fontFamily: "var(--serif)",
+                  fontSize: 16,
+                  fontWeight: 600,
+                  width: "140px",
+                  lineHeight: 1.3,
+                  whiteSpace: "nowrap",
+                  wordBreak: "keep-all"
+                }}>
+                  {s.title}
+                </div>
                 <div className="mob-hide" style={{ fontSize: 13, color: "rgba(250,243,227,.65)" }}>
                   {resolveVenue(s) || "—"}
                 </div>
