@@ -583,7 +583,7 @@ function Schedule() {
               fontFamily: "var(--mono)", fontSize: 10, fontWeight: 600,
               borderRadius: 999, padding: "4px 12px", marginBottom: 14, letterSpacing: ".1em"
             }}>NEXT UP ♡</div>
-            <div style={{ fontFamily: "var(--serif)", fontSize: 28, fontWeight: 700, lineHeight: 1.25, marginBottom: 12, color: "var(--ink)" }}>
+            <div style={{ fontFamily: "var(--serif)", fontSize: 22, fontWeight: 700, lineHeight: 1.25, marginBottom: 12, color: "var(--ink)" }}>
               {next.title}
               {next.role && <span style={{
                 display: "inline-block", marginLeft: 10, fontSize: 12,
@@ -603,7 +603,7 @@ function Schedule() {
         </div>
         ) : (
           <div style={{ marginTop: 56, color: "rgba(250,243,227,.5)", fontFamily: "var(--serif)", fontSize: 16, textAlign: "center" }}>
-            공연 일정을 불러오는 중이에요. ♡
+            공연 일정을 불러오는 중입니다.
           </div>
         )}
 
@@ -626,7 +626,7 @@ function Schedule() {
               color: "rgba(250,243,227,.5)", fontFamily: "var(--serif)",
               fontSize: 16
             }}>
-              예정된 공연이 아직 없어요. ♡
+              아직 예정된 공연이 없어요.
             </div>
             }
           {upcoming.map((s, i) => {
