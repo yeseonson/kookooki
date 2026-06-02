@@ -371,7 +371,7 @@ function SectionHeader({ chapter, label, title, right, chipStyle = {}, labelStyl
 
 // ─── Works ────────────────────────────────────────────────────────────────
 function Works() {
-  const [yearFilter, setYearFilter] = useState("all");
+  const [yearFilter, setYearFilter] = useState("2026");
   const sourceWorks = (window.WORKS && window.WORKS.length ? window.WORKS : WORKS);
   const years = useMemo(() => [...new Set(sourceWorks.map((w) => w.year).filter(Boolean))].sort((a, b) => b - a), [sourceWorks]);
   const recentYears = useMemo(() => years.filter((y) => y >= 2020), [years]);
@@ -394,7 +394,7 @@ function Works() {
       <SectionHeader chapter="03" label="Works" title="출연 작품" />
 
       <div style={{ marginTop: 20, display: "flex", gap: 6, flexWrap: "wrap" }}>
-        {[["all", "전체 연도"], ...recentYears.map((y) => [y, String(y)]), ...(before2020.length > 0 ? [["before-2020", "2020 이전"]] : [])].map(([val, lbl]) => (
+        {[...recentYears.map((y) => [y, String(y)]), ...(before2020.length > 0 ? [["before-2020", "2020 이전"]] : []), ["all", "전체"]].map(([val, lbl]) => (
           <button key={val} onClick={() => setYearFilter(val)} style={{
             padding: "8px 14px", border: "1px solid var(--rule)", borderRadius: 999, cursor: "pointer",
             background: String(yearFilter) === String(val) ? "var(--ink)" : "var(--paper)",
@@ -409,7 +409,7 @@ function Works() {
         {filtered.map((w, i) =>
         <div key={i} className="softcard mob-works-row" style={{
           display: "grid",
-          gridTemplateColumns: "72px 1.2fr 0.7fr 1.3fr 60px",
+          gridTemplateColumns: "72px 1.2fr 1fr 0.7fr 1.3fr 60px",
           gap: 24, padding: "22px 24px",
           alignItems: "center"
         }}>
@@ -431,6 +431,9 @@ function Works() {
               color: "var(--accent)", background: "var(--paper-warm)",
               borderRadius: 999, padding: "2px 10px"
             }}>{w.kind}</div>
+            </div>
+            <div className="mob-hide" style={{ fontFamily: "var(--mono)", fontSize: 12, color: "var(--ink-soft)", letterSpacing: ".02em", lineHeight: 1.7 }}>
+              {w.run ? (() => { const [s, e] = w.run.split(" - "); return <><div>{s}</div>{e && <div>{e}</div>}</>; })() : "—"}
             </div>
             <div className="mob-hide" style={{ fontSize: 14, color: "var(--ink)" }}>{w.role}</div>
             <div className="mob-hide" style={{ fontSize: 13, color: "var(--ink-soft)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
