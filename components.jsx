@@ -1,4 +1,4 @@
-// components.jsx — UI components for 꾹꾹이 아카이브
+// components.jsx — UI components
 
 const { useState, useEffect, useMemo, useCallback, useRef } = React;
 
@@ -330,41 +330,6 @@ function About() {
 
 }
 
-// ─── Concerts strip (small, under Works) ──────────────────────────────────
-function ConcertsStrip() {
-  return (
-    <div style={{ marginTop: 56, paddingTop: 28, borderTop: ".5px solid var(--ink)" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 24 }}>
-        <div style={{ display: "flex", gap: 16, alignItems: "baseline" }}>
-          <span style={{ fontFamily: "var(--mono)", fontSize: 11, letterSpacing: ".22em", color: "var(--ink-soft)", textTransform: "uppercase" }}>
-
-          </span>
-          <h3 style={{ fontFamily: "var(--serif)", fontSize: 28, fontWeight: 700, margin: 0 }}>
-
-          </h3>
-        </div>
-        <span style={{ fontFamily: "var(--mono)", fontSize: 11, color: "var(--ink-soft)", letterSpacing: ".06em" }}>
-          {CONCERTS.length} entries
-        </span>
-      </div>
-      <div className="mob-concerts-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "0 32px" }}>
-        {CONCERTS.map((c, i) =>
-        <div key={i} className="mob-concert-row" style={{
-          display: "grid", gridTemplateColumns: "100px 1fr auto",
-          gap: 16, padding: "14px 0", borderBottom: ".5px solid var(--rule)",
-          alignItems: "baseline"
-        }}>
-            <div style={{ fontFamily: "var(--mono)", fontSize: 12, color: "var(--ink-soft)" }}>{c.date}</div>
-            <div style={{ fontFamily: "var(--serif)", fontSize: 16, fontWeight: 500 }}>{c.title}</div>
-            <div className="mob-hide" style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--accent)", letterSpacing: ".08em", textTransform: "uppercase" }}>
-              w/ {c.with}
-            </div>
-          </div>
-        )}
-      </div>
-    </div>);
-
-}
 
 // ─── shared section header ────────────────────────────────────────────────
 function SectionHeader({ chapter, label, title, right, chipStyle = {}, labelStyle = {}, titleStyle = {} }) {
@@ -444,7 +409,7 @@ function Works() {
         {filtered.map((w, i) =>
         <div key={i} className="softcard mob-works-row" style={{
           display: "grid",
-          gridTemplateColumns: "72px 1fr 1fr 220px 60px",
+          gridTemplateColumns: "72px 1.2fr 0.7fr 1.3fr 60px",
           gap: 24, padding: "22px 24px",
           alignItems: "center"
         }}>
@@ -468,9 +433,8 @@ function Works() {
             }}>{w.kind}</div>
             </div>
             <div className="mob-hide" style={{ fontSize: 14, color: "var(--ink)" }}>{w.role}</div>
-            <div className="mob-hide" style={{ fontSize: 13, color: "var(--ink-soft)" }}>
-              <div>{w.venue}</div>
-              <div style={{ fontFamily: "var(--mono)", fontSize: 11, marginTop: 4 }}>{w.run}</div>
+            <div className="mob-hide" style={{ fontSize: 13, color: "var(--ink-soft)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+              {w.casts}
             </div>
             <div className="mob-hide" style={{
             fontFamily: "var(--mono)", fontSize: 11, color: "var(--ink-soft)",
@@ -488,6 +452,8 @@ function Works() {
 // ─── Schedule (with D-Day countdown) ──────────────────────────────────────
 function Schedule() {
   const [tick, setTick] = useState(0);
+  const [showPast, setShowPast] = useState(false);
+  const [pastFilter, setPastFilter] = useState("all");
   useEffect(() => {
     const id = setInterval(() => setTick((t) => t + 1), 1000);
     return () => clearInterval(id);
@@ -503,6 +469,11 @@ function Schedule() {
   const upcoming = useMemo(() => {
     const now = Date.now();
     return SCHEDULE.filter((s) => new Date(s.date + "T" + s.time + ":00").getTime() >= now);
+  }, [tick]);
+  const past = useMemo(() => {
+    const now = Date.now();
+    return SCHEDULE.filter((s) => new Date(s.date + "T" + s.time + ":00").getTime() < now)
+      .sort((a, b) => b.date.localeCompare(a.date) || b.time.localeCompare(a.time));
   }, [tick]);
   const next = upcoming[0] || SCHEDULE[SCHEDULE.length - 1] || null;
   const target = useMemo(() => next ? new Date(next.date + "T" + next.time + ":00") : null, [next?.date, next?.time]);
@@ -614,10 +585,10 @@ function Schedule() {
             color: "rgba(250,243,227,.5)",
             paddingBottom: 12, marginBottom: 8,
             display: "grid",
-            gridTemplateColumns: "100px 80px 1.5fr 1.2fr 140px 80px",
+            gridTemplateColumns: "100px 80px 0.7fr 2fr 120px 80px",
             gap: 20
           }}>
-            <div>날짜</div><div>시간</div><div>작품</div><div>공연장</div><div>비고</div><div style={{ textAlign: "right" }}>D-Day</div>
+            <div>날짜</div><div>시간</div><div>작품</div><div>캐스팅</div><div>비고</div><div style={{ textAlign: "right" }}>D-Day</div>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
           {upcoming.length === 0 &&
@@ -634,7 +605,7 @@ function Schedule() {
               return (
                 <div key={i} className="mob-sched-row" style={{
                   display: "grid",
-                  gridTemplateColumns: "100px 80px 1.5fr 1.2fr 140px 80px",
+                  gridTemplateColumns: "100px 80px 0.7fr 2fr 120px 80px",
                   gap: 20, padding: "14px 18px",
                   background: "rgba(250,243,227,.04)",
                   borderRadius: "var(--radius-sm)",
@@ -655,8 +626,8 @@ function Schedule() {
                 }}>
                   {s.title}
                 </div>
-                <div className="mob-hide" style={{ fontSize: 13, color: "rgba(250,243,227,.65)" }}>
-                  {resolveVenue(s) || "—"}
+                <div className="mob-hide" style={{ fontSize: 13, color: "rgba(250,243,227,.65)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  {(() => { const w = sourceWorks.find((w) => w.id === s.work_id); return w?.casts || s.casts || "—"; })()}
                 </div>
                 <div className="mob-hide">
                   {s.note ? <span style={{
@@ -677,6 +648,83 @@ function Schedule() {
             })}
           </div>
         </div>
+
+        {/* 지난 공연 토글 */}
+        {past.length > 0 && (
+          <div style={{ marginTop: 32, position: "relative", zIndex: 1 }}>
+            <button
+              onClick={() => { setShowPast((v) => !v); setPastFilter("all"); }}
+              style={{
+                background: "transparent", border: ".5px solid rgba(250,243,227,.25)",
+                color: "rgba(250,243,227,.6)", borderRadius: 999,
+                fontFamily: "var(--sans)", fontSize: 12, fontWeight: 500,
+                padding: "7px 18px", cursor: "pointer", letterSpacing: ".04em",
+                transition: "border-color .18s, color .18s"
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(250,243,227,.6)"; e.currentTarget.style.color = "#faf3e3"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(250,243,227,.25)"; e.currentTarget.style.color = "rgba(250,243,227,.6)"; }}
+            >
+              {showPast ? "▲ 지난 공연 접기" : `▼ 지난 공연 (${past.length})`}
+            </button>
+
+            {showPast && (() => {
+              const pastTitles = ["all", ...[...new Set(past.map((s) => s.title))]];
+              const filteredPast = pastFilter === "all" ? past : past.filter((s) => s.title === pastFilter);
+              return (
+                <>
+                  <div style={{ marginTop: 14, display: "flex", gap: 6, flexWrap: "wrap" }}>
+                    {pastTitles.map((t) => (
+                      <button key={t} onClick={() => setPastFilter(t)} style={{
+                        padding: "5px 14px", borderRadius: 999, cursor: "pointer",
+                        fontFamily: "var(--sans)", fontSize: 11, fontWeight: 500,
+                        border: ".5px solid rgba(250,243,227,.25)",
+                        background: pastFilter === t ? "rgba(250,243,227,.15)" : "transparent",
+                        color: pastFilter === t ? "#faf3e3" : "rgba(250,243,227,.5)",
+                        transition: "background .15s, color .15s"
+                      }}>{t === "all" ? `전체 (${past.length})` : t}</button>
+                    ))}
+                  </div>
+                  <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 4 }}>
+                    {filteredPast.map((s, i) => {
+                  const dd = daysUntil(s.date);
+                  return (
+                    <div key={i} className="mob-sched-row" style={{
+                      display: "grid",
+                      gridTemplateColumns: "100px 80px 0.7fr 2fr 120px 80px",
+                      gap: 20, padding: "12px 18px",
+                      background: "rgba(250,243,227,.02)",
+                      borderRadius: "var(--radius-sm)",
+                      alignItems: "center",
+                      opacity: 0.6
+                    }}>
+                      <div style={{ fontFamily: "var(--mono)", fontSize: 13, fontVariantNumeric: "tabular-nums" }}>
+                        {s.date.slice(5).replace("-", ".")}
+                      </div>
+                      <div className="mob-hide" style={{ fontFamily: "var(--mono)", fontSize: 13 }}>{s.time}</div>
+                      <div style={{ fontFamily: "var(--serif)", fontSize: 16, fontWeight: 600, whiteSpace: "nowrap" }}>{s.title}</div>
+                      <div className="mob-hide" style={{ fontSize: 13, color: "rgba(250,243,227,.65)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                        {(() => { const w = sourceWorks.find((w) => w.id === s.work_id); return w?.casts || s.casts || "—"; })()}
+                      </div>
+                      <div className="mob-hide">
+                        {s.note ? <span style={{
+                          fontFamily: "var(--sans)", fontSize: 11, fontWeight: 500,
+                          color: "#e8a370", background: "rgba(184,127,77,.15)",
+                          borderRadius: 999, padding: "3px 10px"
+                        }}>{s.note}</span> : <span style={{ color: "rgba(250,243,227,.2)" }}>—</span>}
+                      </div>
+                      <div style={{ fontFamily: "var(--mono)", fontSize: 12, textAlign: "right", color: "rgba(250,243,227,.35)", fontVariantNumeric: "tabular-nums" }}>
+                        {dd === 0 ? "D-DAY" : dd > 0 ? `D-${dd}` : `+${Math.abs(dd)}`}
+                      </div>
+                    </div>
+                  );
+                    })}
+                  </div>
+                </>
+              );
+            })()}
+          </div>
+        )}
+
       </div>
     </section>);
 
@@ -948,4 +996,4 @@ function Footer() {
 
 }
 
-Object.assign(window, { Nav, Hero, About, Works, Schedule, Gallery, Footer, SectionHeader, PH, ConcertsStrip, ScrollToTop });
+Object.assign(window, { Nav, Hero, About, Works, Schedule, Gallery, Footer, SectionHeader, PH, ScrollToTop });
