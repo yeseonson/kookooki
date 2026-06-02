@@ -741,11 +741,13 @@ function Gallery() {
   const profileReal = GALLERY.filter((g) => g.tag === "PROFILE");
   const profileSlots = Math.max(profileReal.length, 4);
   const profileItems = Array.from({ length: profileSlots }, (_, i) => profileReal[i] || null);
-  const etcItems = GALLERY.filter((g) => g.tag !== "PROFILE");
+  const pairItems = GALLERY.filter((g) => g.tag === "PAIR");
 
   const filtered = tab === "프로필"
     ? profileItems.filter(Boolean)
-    : etcItems;
+    : tab === "페어컷"
+    ? pairItems
+    : [];
 
   useEffect(() => { setOpen(null); }, [tab]);
 
@@ -818,7 +820,7 @@ function Gallery() {
         right={
           <div style={{ display: "flex", gap: 8 }}>
             <TabBtn id="프로필" label="프로필" />
-            <TabBtn id="기타" label="기타" />
+            <TabBtn id="페어컷" label="페어컷" />
           </div>
         }
       />
@@ -852,6 +854,22 @@ function Gallery() {
               </div>
             )
           )}
+        </div>
+      )}
+
+      {/* 페어컷 tab — uniform 3/4 grid */}
+      {tab === "페어컷" && (
+        <div className="mob-gallery-grid" style={{
+          marginTop: 32,
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gap: 16
+        }}>
+          {pairItems.map((g, i) => (
+            <div key={g.id} style={{ aspectRatio: "3 / 4", position: "relative" }}>
+              <GalleryCard g={g} i={i} style={{ width: "100%", height: "100%" }} onClick={() => setOpen(i)} hideLabels />
+            </div>
+          ))}
         </div>
       )}
 
