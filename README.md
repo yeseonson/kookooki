@@ -21,7 +21,8 @@
 
 * Vanilla HTML / CSS
 * React (CDN)
-* Supabase
+* Supabase (데이터 관리)
+* AWS S3 (이미지 저장)
 * GitHub Pages
 
 ## Deployment
