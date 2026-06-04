@@ -49,15 +49,20 @@ function App() {
       if (!concerts.error && concerts.data?.length) window.CONCERTS = concerts.data;
       if (!gallery.error && gallery.data?.length) {
         const worksData = window.WORKS || [];
+        const runStart = (run = "") => {
+          const m = String(run || "").match(/\d{4}[.-]\d{1,2}[.-]\d{1,2}/);
+          return m ? m[0].replace(/\./g, "-") : "";
+        };
         window.GALLERY = gallery.data.map((g) => {
           const work = worksData.find((w) => w.id === g.id);
           return {
             ...g,
+            _run: work?.run || "",
             caption: work
               ? `〈${work.title}〉 ${work.role}${work.year ? ` · ${work.year}` : ""}`
               : (g.caption || g.id),
           };
-        });
+        }).sort((a, b) => runStart(b._run).localeCompare(runStart(a._run)));
       }
       setLoaded(true);
     }).catch(() => setLoaded(true));
