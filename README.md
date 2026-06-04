@@ -5,17 +5,13 @@
 
 ## Features
 
-* **About**
-  프로필 및 소개
+* **About**: 프로필 및 소개
 
-* **Schedule**
-  일정 및 D-day 관리
+* **Schedule**: 공연 일정 및 D-day 관리
 
-* **Works**
-  작품 및 활동 아카이브
+* **Works**: 작품 및 활동 아카이브
 
-* **Gallery**
-  사진 및 이미지 갤러리
+* **Gallery**: 프로필 및 페어컷 갤러리
 
 ## Tech Stack
 
