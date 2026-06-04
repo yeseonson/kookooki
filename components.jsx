@@ -684,7 +684,7 @@ function Schedule() {
                         background: pastFilter === t ? "rgba(250,243,227,.15)" : "transparent",
                         color: pastFilter === t ? "#faf3e3" : "rgba(250,243,227,.5)",
                         transition: "background .15s, color .15s"
-                      }}>{t === "all" ? `전체 (${past.length})` : t}</button>
+                      }}>{t === "all" ? `전체 (${past.length})` : `${t} (${past.filter((s) => s.title === t).length})`}</button>
                     ))}
                   </div>
                   <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 4 }}>
