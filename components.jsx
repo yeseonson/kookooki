@@ -297,7 +297,7 @@ function About() {
 
         {/* Profile photo on the right */}
         <div className="mob-about-img" style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-          <PH ratio="3 / 4" label="PROFILE" code="profile-01.jpg" />
+          <PH ratio="3 / 4" label="PROFILE" code="https://kookooki-992382653551-ap-northeast-2-an.s3.ap-northeast-2.amazonaws.com/images/사의찬미.jpeg" />
           <div style={{
             border: "1px solid var(--rule)", borderRadius: 18,
             padding: "14px 16px", background: "rgba(255,255,255,.55)"
@@ -307,9 +307,9 @@ function About() {
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 6 }}>
               {[
-                { key: "instagram", icon: "images/instagram.svg",  iconW: 20, label: "@sunkorea91",            fallback: "https://www.instagram.com/sunkorea91/" },
-                { key: "youtube",   icon: "images/youtube.svg",    iconW: 20, label: "서동진과 선한국의 유튜브", fallback: "https://www.youtube.com/@sunseo2910" },
-                { key: "kakao",     icon: "images/kakao.jpg",      iconW: 18, label: "벼랑끝에 선 한국 뮤지컬", fallback: "https://open.kakao.com/o/g1r9ty6f" },
+                { key: "instagram", icon: "https://kookooki-992382653551-ap-northeast-2-an.s3.ap-northeast-2.amazonaws.com/images/instagram.svg",  iconW: 20, label: "@sunkorea91",            fallback: "https://www.instagram.com/sunkorea91/" },
+                { key: "youtube",   icon: "https://kookooki-992382653551-ap-northeast-2-an.s3.ap-northeast-2.amazonaws.com/images/youtube.svg",    iconW: 20, label: "서동진과 선한국의 유튜브", fallback: "https://www.youtube.com/@sunseo2910" },
+                { key: "kakao",     icon: "https://kookooki-992382653551-ap-northeast-2-an.s3.ap-northeast-2.amazonaws.com/images/kakao.jpg",      iconW: 18, label: "벼랑끝에 선 한국 뮤지컬", fallback: "https://open.kakao.com/o/g1r9ty6f" },
               ].map(({ key, icon, iconW, label, fallback }) => {
                 const href = (PROFILE.social && PROFILE.social[key]) || fallback;
                 return (

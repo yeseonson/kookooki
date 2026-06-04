@@ -55,8 +55,10 @@ function App() {
         };
         window.GALLERY = gallery.data.map((g) => {
           const work = worksData.find((w) => w.id === g.id);
+          const S3 = "https://kookooki-992382653551-ap-northeast-2-an.s3.ap-northeast-2.amazonaws.com";
           return {
             ...g,
+            image: g.image && !g.image.startsWith("http") ? `${S3}/${g.image}` : g.image,
             _run: work?.run || "",
             caption: work
               ? `〈${work.title}〉 ${work.role}${work.year ? ` · ${work.year}` : ""}`
