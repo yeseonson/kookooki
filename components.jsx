@@ -736,7 +736,7 @@ function Schedule() {
 // ─── Gallery (with lightbox) ──────────────────────────────────────────────
 function Gallery() {
   const [open, setOpen] = useState(null);
-  const [tab, setTab] = useState("프로필");
+  const [tab, setTab] = useState("Profile");
 
   const profileReal = GALLERY.filter((g) => g.tag === "PROFILE");
   const profileSlots = Math.max(profileReal.length, 4);
