@@ -11,7 +11,7 @@
 
 * **Works**: 작품 및 활동 아카이브
 
-* **Gallery**: 프로필 및 페어컷 갤러리
+* **Gallery**: 프로필 및 갤러리
 
 ## Tech Stack
 

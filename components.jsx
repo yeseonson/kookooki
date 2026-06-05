@@ -741,11 +741,11 @@ function Gallery() {
   const profileReal = GALLERY.filter((g) => g.tag === "PROFILE");
   const profileSlots = Math.max(profileReal.length, 4);
   const profileItems = Array.from({ length: profileSlots }, (_, i) => profileReal[i] || null);
-  const pairItems = GALLERY.filter((g) => g.tag === "PAIR");
+  const pairItems = GALLERY.filter((g) => g.tag === "ONGOING");
 
-  const filtered = tab === "프로필"
+  const filtered = tab === "Profile"
     ? profileItems.filter(Boolean)
-    : tab === "페어컷"
+    : tab === "Now"
     ? pairItems
     : [];
 
@@ -819,14 +819,14 @@ function Gallery() {
         title="갤러리"
         right={
           <div style={{ display: "flex", gap: 8 }}>
-            <TabBtn id="프로필" label="프로필" />
-            <TabBtn id="페어컷" label="페어컷" />
+            <TabBtn id="Profile" label="Profile" />
+            <TabBtn id="Now" label="Now" />
           </div>
         }
       />
 
-      {/* 프로필 tab — uniform 3/4 grid, 17 slots */}
-      {tab === "프로필" && (
+      {/* Profile tab — uniform 3/4 grid, 17 slots */}
+      {tab === "Profile" && (
         <div className="mob-gallery-grid" style={{
           marginTop: 32,
           display: "grid",
@@ -857,8 +857,8 @@ function Gallery() {
         </div>
       )}
 
-      {/* 페어컷 tab — uniform 3/4 grid */}
-      {tab === "페어컷" && (
+      {/* Now tab — uniform 3/4 grid */}
+      {tab === "Now" && (
         <div className="mob-gallery-grid" style={{
           marginTop: 32,
           display: "grid",
