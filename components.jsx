@@ -738,10 +738,11 @@ function Gallery() {
   const [open, setOpen] = useState(null);
   const [tab, setTab] = useState("Profile");
 
-  const profileReal = GALLERY.filter((g) => g.tag === "PROFILE");
+  const hasTag = (g, tag) => (g.tag || "").split(",").map((t) => t.trim()).includes(tag);
+  const profileReal = GALLERY.filter((g) => hasTag(g, "PROFILE"));
   const profileSlots = Math.max(profileReal.length, 4);
   const profileItems = Array.from({ length: profileSlots }, (_, i) => profileReal[i] || null);
-  const pairItems = GALLERY.filter((g) => g.tag === "ONGOING");
+  const pairItems = GALLERY.filter((g) => hasTag(g, "ONGOING"));
 
   const filtered = tab === "Profile"
     ? profileItems.filter(Boolean)

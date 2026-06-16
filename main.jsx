@@ -40,7 +40,7 @@ function App() {
       client.from("profile").select("*").limit(1),
       client.from("works").select("*").order("year", { ascending: false }),
       client.from("schedule").select("*").order("date", { ascending: true }),
-      client.from("gallery").select("*"),
+      client.from("gallery").select("*").order("load_dtm", { ascending: false }),
       client.from("concerts").select("*").order("date", { ascending: false }),
     ]).then(([profile, works, schedule, gallery, concerts]) => {
       if (!profile.error && profile.data?.[0])    window.PROFILE  = normalizeProfile(profile.data[0]);
@@ -64,7 +64,7 @@ function App() {
               ? `〈${work.title}〉 ${work.role}${work.year ? ` · ${work.year}` : ""}`
               : (g.caption || g.id),
           };
-        }).sort((a, b) => runStart(b._run).localeCompare(runStart(a._run)));
+        }).sort((a, b) => (b.load_dtm || "").localeCompare(a.load_dtm || ""));
       }
       setLoaded(true);
     }).catch(() => setLoaded(true));
