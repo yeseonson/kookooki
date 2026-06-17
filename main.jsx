@@ -4,7 +4,7 @@ const SUPABASE_URL = "https://wacptqjmyabpcluiqbik.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_MNjxC1iwNMKk8EQQ_jDahg_eFgW_o-Z";
 
 // 초기값 — Supabase 로딩 전 첫 렌더에서 undefined 에러 방지
-window.PROFILE   = window.PROFILE   || { nameKo: "", nameEn: "", debutDate: "", birthDate: "", mbti: "", social: {}, facts: [], notes: [] };
+window.PROFILE   = window.PROFILE   || { nameKo: "", nameEn: "", debutDate: "", birthDate: "", mbti: "", social: {}, facts: [], notes: [], galleryId: null };
 window.WORKS     = window.WORKS     || [];
 window.SCHEDULE  = window.SCHEDULE  || [];
 window.GALLERY   = window.GALLERY   || [];
@@ -21,6 +21,7 @@ function normalizeProfile(profile) {
     mbti:      profile.mbti       || "",
     social:    profile.social     || {},
     notes:     profile.notes      || [],
+    galleryId: profile.gallery_id || profile.galleryId || null,
   };
 }
 
@@ -37,7 +38,7 @@ function App() {
     const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     Promise.all([
-      client.from("profile").select("*").limit(1),
+      client.from("profile").select("id, name_ko, name_en, debut_date, birth_date, social, mbti, gallery_id").limit(1),
       client.from("works").select("*").order("year", { ascending: false }),
       client.from("schedule").select("*").order("date", { ascending: true }),
       client.from("gallery").select("*").order("load_dtm", { ascending: false }),
@@ -67,7 +68,10 @@ function App() {
         }).sort((a, b) => (b.load_dtm || "").localeCompare(a.load_dtm || ""));
       }
       setLoaded(true);
-    }).catch(() => setLoaded(true));
+    }).catch((error) => {
+      console.error("Supabase load error", error);
+      setLoaded(true);
+    });
   }, []);
 
   // Apply palette to CSS variables

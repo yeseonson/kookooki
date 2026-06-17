@@ -297,7 +297,13 @@ function About() {
 
         {/* Profile photo on the right */}
         <div className="mob-about-img" style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-          <PH ratio="3 / 4" label="PROFILE" code="https://kookooki-992382653551-ap-northeast-2-an.s3.ap-northeast-2.amazonaws.com/images/사의찬미.jpeg" />
+          <PH
+            ratio="3 / 4"
+            label="PROFILE"
+            code={window.GALLERY.find((item) =>
+              item.id === PROFILE.galleryId || item.gallery_id === PROFILE.galleryId
+            )?.image || window.IMAGE_URLS?.selfProfile}
+          />
           <div style={{
             border: "1px solid var(--rule)", borderRadius: 18,
             padding: "14px 16px", background: "rgba(255,255,255,.55)"
