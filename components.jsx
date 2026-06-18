@@ -415,7 +415,7 @@ function Works() {
         {filtered.map((w, i) =>
         <div key={i} className="softcard mob-works-row" style={{
           display: "grid",
-          gridTemplateColumns: "72px 1.2fr 1fr 0.7fr 1.3fr 60px",
+          gridTemplateColumns: "72px 1.2fr 0.95fr 0.95fr 1.3fr 60px",
           gap: 24, padding: "22px 24px",
           alignItems: "center"
         }}>
@@ -441,10 +441,10 @@ function Works() {
             <div className="mob-hide" style={{ fontFamily: "var(--mono)", fontSize: 12, color: "var(--ink-soft)", letterSpacing: ".02em", lineHeight: 1.7 }}>
               {w.run ? (() => { const [s, e] = w.run.split(" - "); return <><div>{s}</div>{e && <div>{e}</div>}</>; })() : "—"}
             </div>
-            <div className="mob-hide" style={{ fontSize: 14, color: "var(--ink)" }}>{w.role}</div>
             <div className="mob-hide" style={{ fontSize: 13, color: "var(--ink-soft)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-              {w.casts}
+              {w.venue || "—"}
             </div>
+            <div className="mob-hide" style={{ fontSize: 14, color: "var(--ink)" }}>{w.role}</div>
             <div className="mob-hide" style={{
             fontFamily: "var(--mono)", fontSize: 11, color: "var(--ink-soft)",
             textAlign: "right", letterSpacing: ".02em"
