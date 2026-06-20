@@ -4,7 +4,7 @@ const SUPABASE_URL = "https://wacptqjmyabpcluiqbik.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_MNjxC1iwNMKk8EQQ_jDahg_eFgW_o-Z";
 
 // 초기값 — Supabase 로딩 전 첫 렌더에서 undefined 에러 방지
-window.PROFILE   = window.PROFILE   || { nameKo: "", nameEn: "", debutDate: "", birthDate: "", mbti: "", social: {}, facts: [], notes: [], galleryId: null };
+window.PROFILE   = window.PROFILE   || { nameKo: "", nameEn: "", debutDate: "", birthDate: "", mbti: "", agency: "", social: {}, facts: [], notes: [], galleryId: null };
 window.WORKS     = window.WORKS     || [];
 window.SCHEDULE  = window.SCHEDULE  || [];
 window.GALLERY   = window.GALLERY   || [];
@@ -19,6 +19,7 @@ function normalizeProfile(profile) {
     debutDate: profile.debut_date || profile.debutDate || "",
     birthDate: profile.birth_date || profile.birthDate || "",
     mbti:      profile.mbti       || "",
+    agency:    profile.agency     || "",
     social:    profile.social     || {},
     notes:     profile.notes      || [],
     galleryId: profile.gallery_id || profile.galleryId || null,
@@ -38,7 +39,7 @@ function App() {
     const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     Promise.all([
-      client.from("profile").select("id, name_ko, name_en, debut_date, birth_date, social, mbti, gallery_id").limit(1),
+      client.from("profile").select("id, name_ko, name_en, debut_date, birth_date, social, mbti, agency, gallery_id").limit(1),
       client.from("works").select("*").order("year", { ascending: false }),
       client.from("schedule").select("*").order("date", { ascending: true }),
       client.from("gallery").select("*").order("load_dtm", { ascending: false }),
@@ -61,6 +62,7 @@ function App() {
             ...g,
             image: g.image && !g.image.startsWith("http") ? `${S3}/${g.image}` : g.image,
             _run: work?.run || "",
+            hasWork: !!work,
             caption: work
               ? `〈${work.title}〉 ${work.role}${work.year ? ` · ${work.year}` : ""}`
               : (g.caption || g.id),

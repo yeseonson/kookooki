@@ -190,6 +190,7 @@ function About() {
         </>
       ) : ""
     ],
+    ["소속사", PROFILE.agency || ""],
   ].filter(([, v]) => v);
   const birthday = useMemo(() => {
     const d = new Date(birthStr + "T00:00:00");
@@ -248,48 +249,66 @@ function About() {
             </tbody>
           </table>
 
-          <div style={{ marginTop: 28, display: "flex", alignItems: "center", gap: 16 }}>
-            <div>
-              <div style={{ fontFamily: "var(--mono)", fontSize: 10, letterSpacing: ".18em", color: "var(--ink-soft)", textTransform: "uppercase", marginBottom: 4 }}>Booking</div>
-              <div style={{ fontFamily: "var(--serif)", fontSize: 16, fontWeight: 600, color: "var(--ink)" }}>{"<사의 찬미> 예매하기"}</div>
+          <div style={{ marginTop: 28 }}>
+            <div style={{ fontFamily: "var(--mono)", fontSize: 10, letterSpacing: ".18em", color: "var(--ink-soft)", textTransform: "uppercase", marginBottom: 12 }}>Booking</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          {[
+            {
+              title: "<사의 찬미> 예매하기",
+              links: [
+                { href: "https://www.ticketlink.co.kr/product/63166", label: "티켓링크" },
+                { href: "https://ticket.yes24.com/Perf/58416",        label: "예스24" },
+              ],
+            },
+            {
+              title: "<사칠> 예매하기",
+              links: [
+                { href: "https://www.ticketlink.co.kr/product/64013", label: "티켓링크" },
+                { href: "https://ticket.yes24.com/Perf/58949",        label: "예스24" },
+              ],
+            },
+          ].map(({ title, links }) => (
+            <div key={title} style={{ display: "flex", alignItems: "center", gap: 16 }}>
+              <div style={{ width: 160, flexShrink: 0 }}>
+                <div style={{ fontFamily: "var(--serif)", fontSize: 16, fontWeight: 600, color: "var(--ink)" }}>{title}</div>
+              </div>
+              <div style={{ width: 1, height: 36, background: "var(--rule)", flexShrink: 0 }} />
+              <div style={{ display: "flex", gap: 10 }}>
+              {links.map(({ href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{
+                    display: "inline-flex", alignItems: "center",
+                    padding: "8px 14px",
+                    background: "var(--paper)", color: "var(--ink)",
+                    border: "1px solid var(--rule)",
+                    fontFamily: "var(--sans)", fontSize: 12, fontWeight: 600,
+                    borderRadius: 999, textDecoration: "none",
+                    letterSpacing: ".01em",
+                    whiteSpace: "nowrap",
+                    boxShadow: "var(--shadow-sm)",
+                    transition: "background .18s, color .18s, border-color .18s"
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "var(--accent)";
+                    e.currentTarget.style.color = "var(--paper)";
+                    e.currentTarget.style.borderColor = "var(--accent)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "var(--paper)";
+                    e.currentTarget.style.color = "var(--ink)";
+                    e.currentTarget.style.borderColor = "var(--rule)";
+                  }}
+                >
+                  {label}
+                </a>
+              ))}
+              </div>
             </div>
-            <div style={{ width: 1, height: 36, background: "var(--rule)", flexShrink: 0 }} />
-            <div style={{ display: "flex", gap: 10 }}>
-            {[
-              { href: "https://www.ticketlink.co.kr/product/63166", label: "티켓링크" },
-              { href: "https://ticket.yes24.com/Perf/58416",        label: "예스24" },
-            ].map(({ href, label }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noreferrer"
-                style={{
-                  display: "inline-flex", alignItems: "center",
-                  padding: "8px 14px",
-                  background: "var(--paper)", color: "var(--ink)",
-                  border: "1px solid var(--rule)",
-                  fontFamily: "var(--sans)", fontSize: 12, fontWeight: 600,
-                  borderRadius: 999, textDecoration: "none",
-                  letterSpacing: ".01em",
-                  whiteSpace: "nowrap",
-                  boxShadow: "var(--shadow-sm)",
-                  transition: "background .18s, color .18s, border-color .18s"
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = "var(--accent)";
-                  e.currentTarget.style.color = "var(--paper)";
-                  e.currentTarget.style.borderColor = "var(--accent)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "var(--paper)";
-                  e.currentTarget.style.color = "var(--ink)";
-                  e.currentTarget.style.borderColor = "var(--rule)";
-                }}
-              >
-                {label}
-              </a>
-            ))}
+          ))}
             </div>
           </div>
 
@@ -748,10 +767,13 @@ function Gallery() {
   const profileReal = GALLERY.filter((g) => hasTag(g, "PROFILE"));
   const profileSlots = Math.max(profileReal.length, 4);
   const profileItems = Array.from({ length: profileSlots }, (_, i) => profileReal[i] || null);
+  const officialItems = GALLERY.filter((g) => hasTag(g, "OFFICIAL"));
   const pairItems = GALLERY.filter((g) => hasTag(g, "ONGOING"));
 
   const filtered = tab === "Profile"
     ? profileItems.filter(Boolean)
+    : tab === "Official"
+    ? officialItems
     : tab === "Now"
     ? pairItems
     : [];
@@ -813,7 +835,7 @@ function Gallery() {
       }}
       onMouseEnter={(e) => e.currentTarget.style.opacity = 1}
       onMouseLeave={(e) => e.currentTarget.style.opacity = 0}>
-        {g.caption} →
+        {g.caption}{g.hasWork ? " →" : ""}
       </div>
     </button>
   );
@@ -827,6 +849,7 @@ function Gallery() {
         right={
           <div style={{ display: "flex", gap: 8 }}>
             <TabBtn id="Profile" label="Profile" />
+            <TabBtn id="Official" label="Official" />
             <TabBtn id="Now" label="Now" />
           </div>
         }
@@ -837,7 +860,7 @@ function Gallery() {
         <div className="mob-gallery-grid" style={{
           marginTop: 32,
           display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
+          gridTemplateColumns: "repeat(3, 1fr)",
           gap: 16
         }}>
           {profileItems.map((g, i) =>
@@ -864,15 +887,15 @@ function Gallery() {
         </div>
       )}
 
-      {/* Now tab — uniform 3/4 grid */}
-      {tab === "Now" && (
+      {/* Official tab — uniform 3/4 grid */}
+      {tab === "Official" && (
         <div className="mob-gallery-grid" style={{
           marginTop: 32,
           display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
+          gridTemplateColumns: "repeat(3, 1fr)",
           gap: 16
         }}>
-          {pairItems.map((g, i) => (
+          {officialItems.map((g, i) => (
             <div key={g.id} style={{ aspectRatio: "3 / 4", position: "relative" }}>
               <GalleryCard g={g} i={i} style={{ width: "100%", height: "100%" }} onClick={() => setOpen(i)} hideLabels />
             </div>
@@ -880,15 +903,19 @@ function Gallery() {
         </div>
       )}
 
-      {/* 기타 tab — 준비중 */}
-      {tab === "기타" && (
-        <div style={{
-          marginTop: 56, padding: "80px 0",
-          display: "flex", flexDirection: "column", alignItems: "center", gap: 12,
-          borderTop: "1px dashed var(--rule)"
+      {/* Now tab — uniform 3/4 grid */}
+      {tab === "Now" && (
+        <div className="mob-gallery-grid" style={{
+          marginTop: 32,
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: 16
         }}>
-          <span style={{ fontFamily: "var(--mono)", fontSize: 11, letterSpacing: ".22em", color: "var(--ink-soft)", textTransform: "uppercase" }}>Coming soon</span>
-          <span style={{ fontFamily: "var(--serif)", fontSize: 28, fontWeight: 600, color: "var(--ink)" }}>준비중입니다</span>
+          {pairItems.map((g, i) => (
+            <div key={g.id} style={{ aspectRatio: "3 / 4", position: "relative" }}>
+              <GalleryCard g={g} i={i} style={{ width: "100%", height: "100%" }} onClick={() => setOpen(i)} hideLabels />
+            </div>
+          ))}
         </div>
       )}
 
