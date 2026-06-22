@@ -30,6 +30,8 @@ function PH({ ratio = "3 / 4", label = "PHOTO", code, style }) {
         <img
           src={code}
           alt={label}
+          loading="lazy"
+          decoding="async"
           style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
         />
       ) : (
@@ -342,7 +344,7 @@ function About() {
                     display: "inline-flex", alignItems: "center", gap: 8,
                     fontFamily: "var(--serif)", fontSize: 14, color: "var(--ink)", textDecoration: "none"
                   }}>
-                    <img src={icon} alt={key} style={{ width: iconW, height: iconW, objectFit: "contain" }} />
+                    <img src={icon} alt={key} loading="lazy" decoding="async" style={{ width: iconW, height: iconW, objectFit: "contain" }} />
                     {label}
                   </a>
                 );
@@ -822,7 +824,7 @@ function Gallery() {
     }}>
       <div className="ph" style={{ width: "100%", height: "100%", aspectRatio: "auto", overflow: "hidden" }}>
         {g.image
-          ? <img src={g.image} alt={g.caption} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block", zIndex: 0 }} />
+          ? <img src={g.image} alt={g.caption} loading="lazy" decoding="async" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block", zIndex: 0 }} />
           : null}
         {!hideLabels && <span className="cnr" style={{ zIndex: 1 }}>{g.id}.jpg</span>}
         {!hideLabels && <span className="lbl" style={{ zIndex: 1 }}>{g.tag}</span>}
@@ -946,7 +948,7 @@ function Gallery() {
         <div onClick={(e) => e.stopPropagation()} style={{ maxWidth: 900, width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
           <div style={{ position: "relative", maxHeight: "75vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
             {filtered[open]?.image
-              ? <img src={filtered[open].image} alt={filtered[open].caption} style={{ maxHeight: "75vh", maxWidth: "100%", objectFit: "contain", display: "block", borderRadius: 4 }} />
+              ? <img src={filtered[open].image} alt={filtered[open].caption} decoding="async" style={{ maxHeight: "75vh", maxWidth: "100%", objectFit: "contain", display: "block", borderRadius: 4 }} />
               : <div style={{
                   width: 320, height: 420,
                   background: `repeating-linear-gradient(135deg, rgba(251,244,227,.08) 0 14px, transparent 14px 28px), rgba(251,244,227,.04)`,
