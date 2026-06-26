@@ -764,6 +764,7 @@ function Schedule() {
 function Gallery() {
   const [open, setOpen] = useState(null);
   const [tab, setTab] = useState("Profile");
+  const [videoTab, setVideoTab] = useState(null);
 
   const hasTag = (g, tag) => (g.tag || "").split(",").map((t) => t.trim()).includes(tag);
   const profileReal = GALLERY.filter((g) => hasTag(g, "PROFILE"));
@@ -771,6 +772,14 @@ function Gallery() {
   const profileItems = Array.from({ length: profileSlots }, (_, i) => profileReal[i] || null);
   const officialItems = GALLERY.filter((g) => hasTag(g, "OFFICIAL"));
   const pairItems = GALLERY.filter((g) => hasTag(g, "ONGOING"));
+  const videoItems = GALLERY.filter((g) => hasTag(g, "VIDEO"));
+  const videoTitles = [
+    "전체",
+    ...new Set(videoItems.map((g) => g._title).filter(Boolean)),
+    ...(videoItems.some((g) => !g._title) ? ["기타"] : []),
+  ];
+
+  const parseRatio = (r) => (r || "3/4").replace(/"/g, "");
 
   const filtered = tab === "Profile"
     ? profileItems.filter(Boolean)
@@ -778,9 +787,14 @@ function Gallery() {
     ? officialItems
     : tab === "Now"
     ? pairItems
+    : tab === "Video"
+    ? videoItems
     : [];
 
-  useEffect(() => { setOpen(null); }, [tab]);
+  useEffect(() => {
+    setOpen(null);
+    if (tab === "Video") setVideoTab((prev) => prev || "전체");
+  }, [tab]);
 
   useEffect(() => {
     if (open === null) return;
@@ -817,19 +831,24 @@ function Gallery() {
     >{label}</button>
   );
 
-  const GalleryCard = ({ g, i, style = {}, onClick, hideLabels = false }) => (
+  const GalleryCard = ({ g, i, style = {}, onClick, hideLabels = false, hideCaption = false }) => (
     <button key={g.id} onClick={onClick} style={{
       padding: 0, border: 0, background: "transparent", cursor: "pointer",
       position: "relative", ...style
     }}>
       <div className="ph" style={{ width: "100%", height: "100%", aspectRatio: "auto", overflow: "hidden" }}>
-        {g.image
-          ? <img src={g.image} alt={g.caption} loading="lazy" decoding="async" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block", zIndex: 0 }} />
+        {(g.youtube_id ? `https://img.youtube.com/vi/${g.youtube_id}/hqdefault.jpg` : g.image)
+          ? <img src={g.youtube_id ? `https://img.youtube.com/vi/${g.youtube_id}/hqdefault.jpg` : g.image} alt={g.caption} loading="lazy" decoding="async" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block", zIndex: 0 }} />
           : null}
+        {g.youtube_id && (
+          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 2, pointerEvents: "none" }}>
+            <div style={{ width: 48, height: 48, borderRadius: "50%", background: "rgba(0,0,0,.6)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 18, paddingLeft: 3 }}>▶</div>
+          </div>
+        )}
         {!hideLabels && <span className="cnr" style={{ zIndex: 1 }}>{g.id}.jpg</span>}
         {!hideLabels && <span className="lbl" style={{ zIndex: 1 }}>{g.tag}</span>}
       </div>
-      <div style={{
+      {!hideCaption && <div style={{
         position: "absolute", inset: 0, opacity: 0, transition: "opacity .2s",
         background: "rgba(42,29,18,.6)", color: "var(--paper)",
         display: "flex", alignItems: "flex-end", padding: 16,
@@ -838,7 +857,7 @@ function Gallery() {
       onMouseEnter={(e) => e.currentTarget.style.opacity = 1}
       onMouseLeave={(e) => e.currentTarget.style.opacity = 0}>
         {g.caption}{g.hasWork ? " →" : ""}
-      </div>
+      </div>}
     </button>
   );
 
@@ -853,6 +872,7 @@ function Gallery() {
             <TabBtn id="Profile" label="Profile" />
             <TabBtn id="Official" label="Official" />
             <TabBtn id="Now" label="Now" />
+            <TabBtn id="Video" label="Video" />
           </div>
         }
       />
@@ -921,6 +941,41 @@ function Gallery() {
         </div>
       )}
 
+      {/* Video tab — sub-tabs by work title, 2-column grid */}
+      {tab === "Video" && (
+        <>
+          {videoTitles.length > 1 && (
+            <div style={{ display: "flex", gap: 8, marginTop: 24, flexWrap: "wrap" }}>
+              {videoTitles.map((title) => (
+                <button
+                  key={title}
+                  onClick={() => { setVideoTab(title); setOpen(null); }}
+                  style={{
+                    padding: "6px 16px", border: "1px solid var(--rule)", borderRadius: 999,
+                    background: videoTab === title ? "var(--ink)" : "transparent",
+                    color: videoTab === title ? "var(--paper)" : "var(--ink-soft)",
+                    fontFamily: "var(--mono)", fontSize: 11, letterSpacing: ".1em",
+                    cursor: "pointer", transition: "background .18s, color .18s"
+                  }}
+                >{title}</button>
+              ))}
+            </div>
+          )}
+          <div style={{
+            marginTop: 16,
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            gap: 16
+          }}>
+            {videoItems.filter((g) => videoTab === "전체" || !videoTab || (videoTab === "기타" ? !g._title : g._title === videoTab)).map((g, i) => (
+              <div key={g.gallery_id} style={{ aspectRatio: parseRatio(g.ratio), position: "relative" }}>
+                <GalleryCard g={g} i={i} style={{ width: "100%", height: "100%" }} onClick={() => setOpen(i)} hideLabels hideCaption />
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
       {open !== null &&
       <div onClick={() => setOpen(null)} style={{
         position: "fixed", inset: 0, zIndex: 100,
@@ -946,8 +1001,18 @@ function Gallery() {
         }}>X</button>
 
         <div onClick={(e) => e.stopPropagation()} style={{ maxWidth: 900, width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <div style={{ position: "relative", maxHeight: "75vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            {filtered[open]?.image
+          <div style={{ position: "relative", maxHeight: "75vh", width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            {filtered[open]?.youtube_id
+              ? <div style={{ width: "min(860px, 88vw)", aspectRatio: "16/9" }}>
+                  <iframe
+                    src={`https://www.youtube.com/embed/${filtered[open].youtube_id}?autoplay=1`}
+                    style={{ width: "100%", height: "100%", border: 0, borderRadius: 4, display: "block" }}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  />
+                </div>
+              : filtered[open]?.image
               ? <img src={filtered[open].image} alt={filtered[open].caption} decoding="async" style={{ maxHeight: "75vh", maxWidth: "100%", objectFit: "contain", display: "block", borderRadius: 4 }} />
               : <div style={{
                   width: 320, height: 420,

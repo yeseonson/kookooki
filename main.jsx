@@ -62,6 +62,7 @@ function App() {
             ...g,
             image: g.image && !g.image.startsWith("http") ? `${S3}/${g.image}` : g.image,
             _run: work?.run || "",
+            _title: work?.title || "",
             hasWork: !!work,
             caption: work
               ? `〈${work.title}〉 ${work.role}${work.year ? ` · ${work.year}` : ""}`
