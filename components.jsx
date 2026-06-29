@@ -954,7 +954,7 @@ function Gallery() {
                     padding: "6px 16px", border: "1px solid var(--rule)", borderRadius: 999,
                     background: videoTab === title ? "var(--ink)" : "transparent",
                     color: videoTab === title ? "var(--paper)" : "var(--ink-soft)",
-                    fontFamily: "var(--mono)", fontSize: 11, letterSpacing: ".1em",
+                    fontFamily: "var(--sans)", fontSize: 12, fontWeight: 500, letterSpacing: ".02em",
                     cursor: "pointer", transition: "background .18s, color .18s"
                   }}
                 >{title}</button>
