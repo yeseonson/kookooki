@@ -484,6 +484,7 @@ function Schedule() {
   const [tick, setTick] = useState(0);
   const [showPast, setShowPast] = useState(false);
   const [pastFilter, setPastFilter] = useState("all");
+  const [upcomingFilter, setUpcomingFilter] = useState("all");
   useEffect(() => {
     const id = setInterval(() => setTick((t) => t + 1), 1000);
     return () => clearInterval(id);
@@ -513,6 +514,8 @@ function Schedule() {
   const h = Math.floor(diff % 86400000 / 3600000);
   const m = Math.floor(diff % 3600000 / 60000);
   const s = Math.floor(diff % 60000 / 1000);
+  const upcomingTitles = upcoming.length > 0 ? ["all", ...[...new Set(upcoming.map((s) => s.title))]] : [];
+  const filteredUpcoming = upcomingFilter === "all" ? upcoming : upcoming.filter((s) => s.title === upcomingFilter);
 
   return (
     <section id="schedule" className="mob-sched-sec" style={{
@@ -610,10 +613,25 @@ function Schedule() {
 
         {/* List */}
         <div style={{ marginTop: 56, position: "relative", zIndex: 1 }}>
+          {upcoming.length > 0 && (
+            <div style={{ marginBottom: 24, display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {upcomingTitles.map((t) => (
+                <button key={t} onClick={() => setUpcomingFilter(t)} style={{
+                  padding: "5px 14px", borderRadius: 30, cursor: "pointer",
+                  fontFamily: "var(--sans)", fontSize: 11, fontWeight: 500,
+                  border: ".5px solid rgba(250,243,227,.25)",
+                  background: upcomingFilter === t ? "rgba(250,243,227,.15)" : "transparent",
+                  color: upcomingFilter === t ? "#faf3e3" : "rgba(250,243,227,.5)",
+                  transition: "background .15s, color .15s"
+                }}>{t === "all" ? `전체 (${upcoming.length})` : `${t} (${upcoming.filter((s) => s.title === t).length})`}</button>
+              ))}
+            </div>
+          )}
           <div className="mob-sched-hdr" style={{
             fontFamily: "var(--sans)", fontSize: 11, fontWeight: 500,
             color: "rgba(250,243,227,.5)",
-            paddingBottom: 12, marginBottom: 8,
+            padding: "0 18px 12px",
+            marginBottom: 8,
             display: "grid",
             gridTemplateColumns: "100px 80px 0.7fr 2fr 120px 80px",
             gap: 20
@@ -621,26 +639,17 @@ function Schedule() {
             <div>날짜</div><div>시간</div><div>작품</div><div>캐스팅</div><div>비고</div><div style={{ textAlign: "right" }}>D-Day</div>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          {upcoming.length === 0 &&
-            <div style={{
-              padding: "40px 20px", textAlign: "center",
-              color: "rgba(250,243,227,.5)", fontFamily: "var(--serif)",
-              fontSize: 16
-            }}>
-              아직 예정된 공연이 없어요.
-            </div>
-            }
-          {upcoming.map((s, i) => {
-              const dd = daysUntil(s.date);
-              return (
-                <div key={i} className="mob-sched-row" style={{
-                  display: "grid",
-                  gridTemplateColumns: "100px 80px 0.7fr 2fr 120px 80px",
-                  gap: 20, padding: "14px 18px",
-                  background: "rgba(250,243,227,.04)",
-                  borderRadius: "var(--radius-sm)",
-                  alignItems: "center"
-                }}>
+          {upcoming.length > 0 && filteredUpcoming.map((s, i) => {
+            const dd = daysUntil(s.date);
+            return (
+              <div key={i} className="mob-sched-row" style={{
+                display: "grid",
+                gridTemplateColumns: "100px 80px 0.7fr 2fr 120px 80px",
+                gap: 20, padding: "14px 18px",
+                background: "rgba(250,243,227,.04)",
+                borderRadius: "var(--radius-sm)",
+                alignItems: "center"
+              }}>
                 <div style={{ fontFamily: "var(--mono)", fontSize: 13, fontVariantNumeric: "tabular-nums" }}>
                   {s.date.slice(5).replace("-", ".")}
                 </div>
@@ -673,9 +682,18 @@ function Schedule() {
                   }}>
                   {dd === 0 ? "D-DAY" : `D-${dd}`}
                 </div>
-              </div>);
-
-            })}
+              </div>
+            );
+          })}
+          {upcoming.length === 0 &&
+            <div style={{
+              padding: "40px 20px", textAlign: "center",
+              color: "rgba(250,243,227,.5)", fontFamily: "var(--serif)",
+              fontSize: 16
+            }}>
+              아직 예정된 공연이 없어요.
+            </div>
+          }
           </div>
         </div>
 
