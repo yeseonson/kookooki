@@ -633,7 +633,7 @@ function Schedule() {
             padding: "0 18px 12px",
             marginBottom: 8,
             display: "grid",
-            gridTemplateColumns: "100px 80px 0.7fr 2fr 120px 80px",
+            gridTemplateColumns: "100px 80px 0.7fr 2.1fr 90px 80px",
             gap: 20
           }}>
             <div>날짜</div><div>시간</div><div>작품</div><div>캐스팅</div><div>비고</div><div style={{ textAlign: "right" }}>D-Day</div>
@@ -644,7 +644,7 @@ function Schedule() {
             return (
               <div key={i} className="mob-sched-row" style={{
                 display: "grid",
-                gridTemplateColumns: "100px 80px 0.7fr 2fr 120px 80px",
+                gridTemplateColumns: "100px 80px 0.7fr 2.1fr 90px 80px",
                 gap: 20, padding: "14px 18px",
                 background: "rgba(250,243,227,.04)",
                 borderRadius: "var(--radius-sm)",
