@@ -499,7 +499,8 @@ function Schedule() {
 
   const upcoming = useMemo(() => {
     const now = Date.now();
-    return SCHEDULE.filter((s) => new Date(s.date + "T" + s.time + ":00").getTime() >= now);
+    return SCHEDULE.filter((s) => new Date(s.date + "T" + s.time + ":00").getTime() >= now)
+      .sort((a, b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time));
   }, [tick]);
   const past = useMemo(() => {
     const now = Date.now();

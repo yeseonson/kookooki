@@ -41,7 +41,7 @@ function App() {
     Promise.all([
       client.from("profile").select("id, name_ko, name_en, debut_date, birth_date, social, mbti, agency, gallery_id").limit(1),
       client.from("works").select("*").order("year", { ascending: false }),
-      client.from("schedule").select("*").order("date", { ascending: true }),
+      client.from("schedule").select("*").order("date", { ascending: true }).order("time", { ascending: true }),
       client.from("gallery").select("*").order("load_dtm", { ascending: false }),
       client.from("concerts").select("*").order("date", { ascending: false }),
     ]).then(([profile, works, schedule, gallery, concerts]) => {
