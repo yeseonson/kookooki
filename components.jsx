@@ -19,6 +19,30 @@ const parseRunStart = (run = "") => {
   if (!match) return null;
   return new Date(match[0].replace(/\./g, "-"));
 };
+// booking 테이블(work_id / vendor / link / sort) → 작품별 예매 링크 묶음
+const groupBooking = (rows, works) => {
+  const groups = [];
+  [...(rows || [])]
+    .sort((a, b) => (a.sort ?? 0) - (b.sort ?? 0))
+    .forEach((b) => {
+      if (!b.link) return;
+      const key = String(b.work_id ?? "");
+      let group = groups.find((g) => g.key === key);
+      if (!group) {
+        const work = (works || []).find((w) => String(w.id) === key);
+        if (!work) return; // 삭제됐거나 아직 안 불러온 작품은 건너뜀
+        group = { key, work, title: `<${work.title}>`, links: [] };
+        groups.push(group);
+      }
+      group.links.push({ href: b.link, label: b.vendor || "예매하기" });
+    });
+  // 공연 시작일이 빠른 작품부터
+  return groups.sort((a, b) => {
+    const aStart = parseRunStart(a.work.run) || new Date((a.work.year || 0) + "-01-01T00:00:00");
+    const bStart = parseRunStart(b.work.run) || new Date((b.work.year || 0) + "-01-01T00:00:00");
+    return aStart.getTime() - bStart.getTime() || String(a.work.title || "").localeCompare(String(b.work.title || ""));
+  });
+};
 
 // ─── Photo block (real image when code is an image file) ───────────────
 function PH({ ratio = "3 / 4", label = "PHOTO", code, style }) {
@@ -203,6 +227,7 @@ function About() {
     const diffDays = Math.ceil((candidate - now) / 86400000);
     return { days: diffDays, label: `${candidate.getFullYear()}년 생일` };
   }, [birthStr]);
+  const bookings = groupBooking(window.BOOKING, window.WORKS);
   return (
     <section id="about" className="mob-sec" style={{ padding: "120px 32px 80px", maxWidth: 1280, margin: "0 auto" }}>
       <SectionHeader chapter="01" label="About" title="배우 선한국" />
@@ -251,34 +276,20 @@ function About() {
             </tbody>
           </table>
 
+          {bookings.length > 0 &&
           <div style={{ marginTop: 28 }}>
             <div style={{ fontFamily: "var(--mono)", fontSize: 10, letterSpacing: ".18em", color: "var(--ink-soft)", textTransform: "uppercase", marginBottom: 12 }}>Booking</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          {[
-            {
-              title: "<사의 찬미> 예매하기",
-              links: [
-                { href: "https://www.ticketlink.co.kr/product/63166", label: "티켓링크" },
-                { href: "https://ticket.yes24.com/Perf/58416",        label: "예스24" },
-              ],
-            },
-            {
-              title: "<사칠> 예매하기",
-              links: [
-                { href: "https://www.ticketlink.co.kr/product/64013", label: "티켓링크" },
-                { href: "https://ticket.yes24.com/Perf/58949",        label: "예스24" },
-              ],
-            },
-          ].map(({ title, links }) => (
-            <div key={title} style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          {bookings.map(({ key, title, links }) => (
+            <div key={key} style={{ display: "flex", alignItems: "center", gap: 16 }}>
               <div style={{ width: 160, flexShrink: 0 }}>
-                <div style={{ fontFamily: "var(--serif)", fontSize: 16, fontWeight: 600, color: "var(--ink)" }}>{title}</div>
+                <div style={{ fontFamily: "var(--serif)", fontSize: 16, fontWeight: 600, color: "var(--ink)", wordBreak: "keep-all" }}>{title}</div>
               </div>
               <div style={{ width: 1, height: 36, background: "var(--rule)", flexShrink: 0 }} />
               <div style={{ display: "flex", gap: 10 }}>
               {links.map(({ href, label }) => (
                 <a
-                  key={label}
+                  key={href}
                   href={href}
                   target="_blank"
                   rel="noreferrer"
@@ -313,6 +324,7 @@ function About() {
           ))}
             </div>
           </div>
+          }
 
         </div>
 

@@ -9,6 +9,7 @@ window.WORKS     = window.WORKS     || [];
 window.SCHEDULE  = window.SCHEDULE  || [];
 window.GALLERY   = window.GALLERY   || [];
 window.CONCERTS  = window.CONCERTS  || [];
+window.BOOKING   = window.BOOKING   || [];
 
 function normalizeProfile(profile) {
   if (!profile) return window.PROFILE || {};
@@ -44,11 +45,13 @@ function App() {
       client.from("schedule").select("*").order("date", { ascending: true }).order("time", { ascending: true }),
       client.from("gallery").select("*").order("load_dtm", { ascending: false }),
       client.from("concerts").select("*").order("date", { ascending: false }),
-    ]).then(([profile, works, schedule, gallery, concerts]) => {
+      client.from("booking").select("*").eq("visible", true).order("sort", { ascending: true }),
+    ]).then(([profile, works, schedule, gallery, concerts, booking]) => {
       if (!profile.error && profile.data?.[0])    window.PROFILE  = normalizeProfile(profile.data[0]);
       if (!works.error && works.data?.length)      window.WORKS    = works.data;
       if (!schedule.error && schedule.data?.length) window.SCHEDULE = schedule.data;
       if (!concerts.error && concerts.data?.length) window.CONCERTS = concerts.data;
+      if (!booking.error && booking.data?.length)  window.BOOKING  = booking.data;
       if (!gallery.error && gallery.data?.length) {
         const worksData = window.WORKS || [];
         const runStart = (run = "") => {
