@@ -520,6 +520,7 @@ function Schedule() {
       .sort((a, b) => b.date.localeCompare(a.date) || b.time.localeCompare(a.time));
   }, [tick]);
   const next = upcoming[0] || SCHEDULE[SCHEDULE.length - 1] || null;
+  const nextCast = next ? (sourceWorks.find((w) => w.id === next.work_id)?.casts || next.casts || "") : "";
   const target = useMemo(() => next ? new Date(next.date + "T" + next.time + ":00") : null, [next?.date, next?.time]);
   const now = new Date();
   const diff = Math.max(0, target ? target - now : 0);
@@ -602,11 +603,11 @@ function Schedule() {
             }}>NEXT UP ♡</div>
             <div style={{ fontFamily: "var(--serif)", fontSize: 22, fontWeight: 700, lineHeight: 1.25, marginBottom: 12, color: "var(--ink)" }}>
               {next.title}
-              {next.role && <span style={{
+              {nextCast && <span style={{
                 display: "inline-block", marginLeft: 10, fontSize: 12,
                 fontWeight: 500, color: "var(--accent)", background: "var(--paper-warm)",
                 borderRadius: 999, padding: "3px 10px", verticalAlign: "middle", fontFamily: "var(--sans)"
-              }}>{next.role}</span>}
+              }}>{nextCast}</span>}
             </div>
             <div style={{ fontSize: 13, color: "var(--ink-soft)", lineHeight: 1.75 }}>
               <div>{fmtKDate(next.date)} · {next.time}</div>
