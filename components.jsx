@@ -464,12 +464,22 @@ function Works() {
               fontFamily: "var(--serif)", fontSize: 22, fontWeight: 700,
               lineHeight: 1.25, color: "var(--ink)"
             }}>{w.title}</div>
-              <div style={{
+              <div className="mob-hide" style={{
               display: "inline-block", marginTop: 6,
               fontFamily: "var(--sans)", fontSize: 11, fontWeight: 500,
               color: "var(--accent)", background: "var(--paper-warm)",
               borderRadius: 999, padding: "2px 10px"
             }}>{w.kind}</div>
+              {/* Mobile-only: run/venue/role shown stacked below instead of being hidden */}
+              <div className="mob-works-meta" style={{ display: "none", flexDirection: "column", gap: 4 }}>
+                {w.run && (() => { const [s, e] = w.run.split(" - "); return (
+                  <div style={{ fontFamily: "var(--mono)", fontSize: 12, color: "var(--ink-soft)", letterSpacing: ".02em" }}>
+                    {s}{e && ` – ${e}`}
+                  </div>
+                ); })()}
+                {w.venue && <div style={{ fontSize: 13, color: "var(--ink-soft)" }}>{w.venue}</div>}
+                {w.role && <div style={{ fontSize: 14, color: "var(--ink)" }}>{w.role}</div>}
+              </div>
             </div>
             <div className="mob-hide" style={{ fontFamily: "var(--mono)", fontSize: 12, color: "var(--ink-soft)", letterSpacing: ".02em", lineHeight: 1.7 }}>
               {w.run ? (() => { const [s, e] = w.run.split(" - "); return <><div>{s}</div>{e && <div>{e}</div>}</>; })() : "—"}
