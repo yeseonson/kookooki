@@ -919,12 +919,13 @@ function Gallery() {
         }}>
           {profileItems.map((g, i) =>
             g ? (
-              <div key={g.id} style={{ aspectRatio: "3 / 4", position: "relative" }}>
+              <div key={g.id} style={{ aspectRatio: "3 / 4", position: "relative", minWidth: 0 }}>
                 <GalleryCard g={g} i={profileItems.slice(0, i + 1).filter(Boolean).length - 1} style={{ width: "100%", height: "100%" }} onClick={() => setOpen(filtered.indexOf(g))} hideLabels />
               </div>
             ) : (
               <div key={`empty-${i}`} style={{
                 aspectRatio: "3 / 4",
+                minWidth: 0,
                 border: "1px dashed var(--rule)",
                 borderRadius: "var(--radius-sm)",
                 background: "var(--paper-warm)",
@@ -950,7 +951,7 @@ function Gallery() {
           gap: 16
         }}>
           {officialItems.map((g, i) => (
-            <div key={g.id} style={{ aspectRatio: "3 / 4", position: "relative" }}>
+            <div key={g.id} style={{ aspectRatio: "3 / 4", position: "relative", minWidth: 0 }}>
               <GalleryCard g={g} i={i} style={{ width: "100%", height: "100%" }} onClick={() => setOpen(i)} hideLabels />
             </div>
           ))}
@@ -966,7 +967,7 @@ function Gallery() {
           gap: 16
         }}>
           {pairItems.map((g, i) => (
-            <div key={g.id} style={{ aspectRatio: "3 / 4", position: "relative" }}>
+            <div key={g.id} style={{ aspectRatio: "3 / 4", position: "relative", minWidth: 0 }}>
               <GalleryCard g={g} i={i} style={{ width: "100%", height: "100%" }} onClick={() => setOpen(i)} hideLabels />
             </div>
           ))}
@@ -993,14 +994,14 @@ function Gallery() {
               ))}
             </div>
           )}
-          <div style={{
+          <div className="mob-gallery-grid" style={{
             marginTop: 16,
             display: "grid",
             gridTemplateColumns: "repeat(2, 1fr)",
             gap: 16
           }}>
             {videoItems.filter((g) => videoTab === "전체" || !videoTab || (videoTab === "기타" ? !g._title : g._title === videoTab)).map((g, i) => (
-              <div key={g.gallery_id} style={{ aspectRatio: parseRatio(g.ratio), position: "relative" }}>
+              <div key={g.gallery_id} style={{ aspectRatio: parseRatio(g.ratio), position: "relative", minWidth: 0 }}>
                 <GalleryCard g={g} i={i} style={{ width: "100%", height: "100%" }} onClick={() => setOpen(i)} hideLabels hideCaption />
               </div>
             ))}
