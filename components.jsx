@@ -19,6 +19,12 @@ const parseRunStart = (run = "") => {
   if (!match) return null;
   return new Date(match[0].replace(/\./g, "-"));
 };
+const formatCastCompact = (cast = "") => {
+  const names = String(cast || "").split("·").map((s) => s.trim()).filter(Boolean);
+  if (names.length === 0) return "";
+  if (names.length > 4) return `${names.slice(0, 4).join(" · ")} 외`;
+  return names.join(" · ");
+};
 // booking 테이블(work_id / vendor / link / sort) → 작품별 예매 링크 묶음
 const groupBooking = (rows, works) => {
   const groups = [];
@@ -674,20 +680,33 @@ function Schedule() {
                 borderRadius: "var(--radius-sm)",
                 alignItems: "center"
               }}>
-                <div style={{ fontFamily: "var(--mono)", fontSize: 13, fontVariantNumeric: "tabular-nums" }}>
-                  {s.date.slice(5).replace("-", ".")}
+                <div>
+                  <div style={{ fontFamily: "var(--mono)", fontSize: 13, fontVariantNumeric: "tabular-nums" }}>
+                    {s.date.slice(5).replace("-", ".")}
+                  </div>
+                  {/* Mobile-only: time shown under the date instead of being hidden */}
+                  {s.time && <div className="mob-sched-meta" style={{ display: "none", fontFamily: "var(--mono)", fontSize: 12, color: "rgba(250,243,227,.65)", marginTop: 2 }}>{s.time}</div>}
                 </div>
                 <div className="mob-hide" style={{ fontFamily: "var(--mono)", fontSize: 13 }}>{s.time}</div>
-                <div style={{
-                  fontFamily: "var(--serif)",
-                  fontSize: 16,
-                  fontWeight: 600,
-                  width: "140px",
-                  lineHeight: 1.3,
-                  whiteSpace: "nowrap",
-                  wordBreak: "keep-all"
-                }}>
-                  {s.title}
+                <div>
+                  <div style={{
+                    fontFamily: "var(--serif)",
+                    fontSize: 16,
+                    fontWeight: 600,
+                    width: "140px",
+                    lineHeight: 1.3,
+                    whiteSpace: "nowrap",
+                    wordBreak: "keep-all"
+                  }}>
+                    {s.title}
+                  </div>
+                  {/* Mobile-only: cast shown under the title instead of being hidden */}
+                  {(() => { const w = sourceWorks.find((w) => w.id === s.work_id); const cast = w?.casts || s.casts; return cast ? (
+                    <div className="mob-sched-meta" style={{
+                      display: "none", marginTop: 2, fontFamily: "var(--sans)", fontSize: 11,
+                      color: "rgba(250,243,227,.65)", whiteSpace: "normal"
+                    }}>{formatCastCompact(cast)}</div>
+                  ) : null; })()}
                 </div>
                 <div className="mob-hide" style={{ fontSize: 13, color: "rgba(250,243,227,.65)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                   {(() => { const w = sourceWorks.find((w) => w.id === s.work_id); return w?.casts || s.casts || "—"; })()}
@@ -769,11 +788,24 @@ function Schedule() {
                       alignItems: "center",
                       opacity: 0.6
                     }}>
-                      <div style={{ fontFamily: "var(--mono)", fontSize: 13, fontVariantNumeric: "tabular-nums" }}>
-                        {s.date.slice(5).replace("-", ".")}
+                      <div>
+                        <div style={{ fontFamily: "var(--mono)", fontSize: 13, fontVariantNumeric: "tabular-nums" }}>
+                          {s.date.slice(5).replace("-", ".")}
+                        </div>
+                        {/* Mobile-only: time shown under the date instead of being hidden */}
+                        {s.time && <div className="mob-sched-meta" style={{ display: "none", fontFamily: "var(--mono)", fontSize: 12, color: "rgba(250,243,227,.55)", marginTop: 2 }}>{s.time}</div>}
                       </div>
                       <div className="mob-hide" style={{ fontFamily: "var(--mono)", fontSize: 13 }}>{s.time}</div>
-                      <div style={{ fontFamily: "var(--serif)", fontSize: 16, fontWeight: 600, whiteSpace: "nowrap" }}>{s.title}</div>
+                      <div>
+                        <div style={{ fontFamily: "var(--serif)", fontSize: 16, fontWeight: 600, whiteSpace: "nowrap" }}>{s.title}</div>
+                        {/* Mobile-only: cast shown under the title instead of being hidden */}
+                        {(() => { const w = sourceWorks.find((w) => w.id === s.work_id); const cast = w?.casts || s.casts; return cast ? (
+                          <div className="mob-sched-meta" style={{
+                            display: "none", marginTop: 2, fontFamily: "var(--sans)", fontSize: 12,
+                            color: "rgba(250,243,227,.5)", whiteSpace: "normal"
+                          }}>{formatCastCompact(cast)}</div>
+                        ) : null; })()}
+                      </div>
                       <div className="mob-hide" style={{ fontSize: 13, color: "rgba(250,243,227,.65)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                         {(() => { const w = sourceWorks.find((w) => w.id === s.work_id); return w?.casts || s.casts || "—"; })()}
                       </div>
