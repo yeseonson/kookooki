@@ -660,7 +660,7 @@ function Schedule() {
             gridTemplateColumns: "100px 80px 0.7fr 2.1fr 90px 80px",
             gap: 20
           }}>
-            <div>날짜</div><div>시간</div><div>작품</div><div>캐스팅</div><div>비고</div><div style={{ textAlign: "right" }}>D-Day</div>
+            <div>날짜</div><div>시간</div><div>작품</div><div>캐스팅</div><div className="sched-note-cell" style={{ textAlign: "center" }}>비고</div><div style={{ textAlign: "right" }}>D-Day</div>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
           {upcoming.length > 0 && filteredUpcoming.map((s, i) => {
@@ -702,10 +702,10 @@ function Schedule() {
                     }}>{cast}</div>
                   ) : null; })()}
                 </div>
-                <div className="mob-hide" style={{ fontSize: 13, color: "rgba(250,243,227,.65)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                <div className="mob-hide sched-cast-cell" style={{ fontSize: 13, color: "rgba(250,243,227,.65)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                   {(() => { const w = sourceWorks.find((w) => w.id === s.work_id); return w?.casts || s.casts || "—"; })()}
                 </div>
-                <div className="mob-hide">
+                <div className="mob-hide sched-note-cell" style={{ textAlign: "center" }}>
                   {s.note ? <span style={{
                       fontFamily: "var(--sans)", fontSize: 11, fontWeight: 500,
                       color: "#e8a370", background: "rgba(184,127,77,.15)",
@@ -800,10 +800,10 @@ function Schedule() {
                           }}>{cast}</div>
                         ) : null; })()}
                       </div>
-                      <div className="mob-hide" style={{ fontSize: 13, color: "rgba(250,243,227,.65)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                      <div className="mob-hide sched-cast-cell" style={{ fontSize: 13, color: "rgba(250,243,227,.65)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                         {(() => { const w = sourceWorks.find((w) => w.id === s.work_id); return w?.casts || s.casts || "—"; })()}
                       </div>
-                      <div className="mob-hide">
+                      <div className="mob-hide sched-note-cell" style={{ textAlign: "center" }}>
                         {s.note ? <span style={{
                           fontFamily: "var(--sans)", fontSize: 11, fontWeight: 500,
                           color: "#e8a370", background: "rgba(184,127,77,.15)",

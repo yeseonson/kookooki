@@ -90,6 +90,15 @@
   .dotline{display:inline-flex;gap:6px;align-items:center;color:var(--accent)}
   .dotline::before,.dotline::after{content:"♡";font-size:11px;opacity:.7}
 
+  /* ── Narrow desktop / tablet (768px–1180px): schedule row keeps 캐스팅 visible, drops 비고 instead of squeezing it away ── */
+  @media (min-width: 768px) and (max-width: 1180px) {
+    .mob-countdown      { grid-template-columns: 1fr !important; gap: 28px !important; }
+    .mob-sched-row      { grid-template-columns: 90px 70px 1fr 1.3fr 70px !important; gap: 14px !important; align-items: start !important; }
+    .mob-sched-hdr      { display: none !important; }
+    .sched-note-cell    { display: none !important; }
+    .sched-cast-cell    { white-space: normal !important; overflow: visible !important; text-overflow: unset !important; }
+  }
+
   /* ── Mobile (≤767px) ───────────────────────────────────────────────────── */
   @media (max-width: 767px) {
     .mob-hide           { display: none !important; }
