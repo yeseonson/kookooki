@@ -19,12 +19,6 @@ const parseRunStart = (run = "") => {
   if (!match) return null;
   return new Date(match[0].replace(/\./g, "-"));
 };
-const formatCastCompact = (cast = "") => {
-  const names = String(cast || "").split("·").map((s) => s.trim()).filter(Boolean);
-  if (names.length === 0) return "";
-  if (names.length > 4) return `${names.slice(0, 4).join(" · ")} 외`;
-  return names.join(" · ");
-};
 // booking 테이블(work_id / vendor / link / sort) → 작품별 예매 링크 묶음
 const groupBooking = (rows, works) => {
   const groups = [];
@@ -705,7 +699,7 @@ function Schedule() {
                     <div className="mob-sched-meta" style={{
                       display: "none", marginTop: 2, fontFamily: "var(--sans)", fontSize: 11,
                       color: "rgba(250,243,227,.65)", whiteSpace: "normal"
-                    }}>{formatCastCompact(cast)}</div>
+                    }}>{cast}</div>
                   ) : null; })()}
                 </div>
                 <div className="mob-hide" style={{ fontSize: 13, color: "rgba(250,243,227,.65)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
@@ -803,7 +797,7 @@ function Schedule() {
                           <div className="mob-sched-meta" style={{
                             display: "none", marginTop: 2, fontFamily: "var(--sans)", fontSize: 12,
                             color: "rgba(250,243,227,.5)", whiteSpace: "normal"
-                          }}>{formatCastCompact(cast)}</div>
+                          }}>{cast}</div>
                         ) : null; })()}
                       </div>
                       <div className="mob-hide" style={{ fontSize: 13, color: "rgba(250,243,227,.65)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
