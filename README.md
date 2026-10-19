@@ -31,7 +31,7 @@ GitHub Pages를 통해 배포됩니다.
 
 ## Website
 
-[kookooki.com](https://kookooki.com/?utm_source=chatgpt.com)
+[kookooki.com](https://kookooki.com/)
 
 ---
 
