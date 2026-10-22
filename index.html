@@ -79,17 +79,6 @@
     padding:24px;
   }
 
-  /* Stamp / sticker rotation helpers */
-  .tilt-l{transform:rotate(-1.2deg)}
-  .tilt-r{transform:rotate(1.2deg)}
-
-  /* Cute heading style */
-  .hand{font-family:var(--serif);font-weight:700;letter-spacing:-.005em}
-
-  /* Decorative dot row */
-  .dotline{display:inline-flex;gap:6px;align-items:center;color:var(--accent)}
-  .dotline::before,.dotline::after{content:"♡";font-size:11px;opacity:.7}
-
   /* ── Narrow desktop / tablet (768px–1180px): schedule row keeps 캐스팅 visible, drops 비고 instead of squeezing it away ── */
   @media (min-width: 768px) and (max-width: 1180px) {
     .mob-countdown      { grid-template-columns: 1fr !important; gap: 28px !important; }
@@ -122,8 +111,6 @@
     .mob-works-meta     { display: flex !important; margin-top: 8px !important; }
     .mob-about-img      { order: -1; }
     .mob-gallery-grid   { grid-template-columns: 1fr !important; }
-    .mob-concerts-grid  { grid-template-columns: 1fr !important; }
-    .mob-concert-row    { grid-template-columns: 72px 1fr !important; gap: 10px !important; }
   }
 </style>
 
