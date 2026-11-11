@@ -849,6 +849,10 @@ function Gallery() {
 
   const parseRatio = (r) => (r || "3/4").replace(/"/g, "");
 
+  const videoFiltered = videoItems.filter((g) =>
+    videoTab === "전체" || !videoTab || (videoTab === "기타" ? !g._title : g._title === videoTab)
+  );
+
   const filtered = tab === "Profile"
     ? profileItems.filter(Boolean)
     : tab === "Official"
@@ -856,7 +860,7 @@ function Gallery() {
     : tab === "Now"
     ? pairItems
     : tab === "Video"
-    ? videoItems
+    ? videoFiltered
     : [];
 
   useEffect(() => {
@@ -1036,7 +1040,7 @@ function Gallery() {
             gridTemplateColumns: "repeat(2, 1fr)",
             gap: 16
           }}>
-            {videoItems.filter((g) => videoTab === "전체" || !videoTab || (videoTab === "기타" ? !g._title : g._title === videoTab)).map((g, i) => (
+            {videoFiltered.map((g, i) => (
               <div key={g.gallery_id} style={{ aspectRatio: parseRatio(g.ratio), position: "relative", minWidth: 0 }}>
                 <GalleryCard g={g} i={i} style={{ width: "100%", height: "100%" }} onClick={() => setOpen(i)} hideLabels hideCaption />
               </div>
